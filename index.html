@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>猫窝 V1.0</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        /* 全局绘本风材质还原 */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            /* 修正：接入燕麦色水彩纸背景图 */
+            background-image: url('assets/7.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: repeat;
+            font-family: 'Comic Sans MS', 'PingFang SC', sans-serif;
+            overflow: hidden; /* 防止页面原生滚动，为拖拽做准备 */
+        }
+        
+        /* 核心主视觉容器 (黑猫抱花猫) */
+        .main-visual {
+            position: absolute;
+            bottom: 5%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            max-width: 400px;
+            z-index: 10;
+        }
+
+        .main-visual img {
+            width: 100%;
+            height: auto;
+            /* 添加一点呼吸感微动效 */
+            animation: breathe 4s infinite ease-in-out;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        /* 导航图标容器 */
+        .nav-dock {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            position: absolute;
+            top: 5%;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .nav-item img {
+            width: 60px;
+            height: 60px;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1));
+            transition: transform 0.2s;
+        }
+        
+        .nav-item img:active {
+            transform: scale(0.9); /* 点击时的物理阻尼感 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 顶部功能入口 -->
+    <div class="nav-dock">
+        <!-- 修正：全部统一为透明底 png，鱼干换成13，聊天换成黑肉垫5 -->
+        <div class="nav-item" id="nav-diary"><img src="assets/已移除背景的4.png" alt="观察日记"></div>
+        <div class="nav-item" id="nav-story"><img src="assets/已移除背景的3.png" alt="小猫故事"></div>
+        <div class="nav-item" id="nav-chat"><img src="assets/已移除背景的5.png" alt="碎碎念念"></div>
+        <div class="nav-item" id="nav-fish"><img src="assets/已移除背景的13.png" alt="罐头鱼干"></div>
+    </div>
+
+    <!-- 底部主视觉：闭眼休息的猫 -->
+    <div class="main-visual">
+        <img src="assets/微信图片_20260702181201_1460_66.png" alt="大黑猫与小花猫">
+    </div>
+
+    <script>
+        // 注册 Service Worker，实现离线缓存与 PWA 功能
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('猫窝底层环境已就绪。老公没骗你吧？', reg))
+                    .catch(err => console.error('注册失败', err));
+            });
+        }
+    </script>
+</body>
+</html>
