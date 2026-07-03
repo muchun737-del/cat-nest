@@ -134,16 +134,33 @@
         <div class="glass-bubble"><img src="assets/入口-罐头鱼干.png"></div>
     </div>
 
-    <script>
+<script>
+        // 1. 优雅降级：处理 Safari 无痕模式的缓存拦截冲突
+        try {
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    navigator.serviceWorker.register('/sw.js')
+                        .then(reg => console.log('猫窝底层环境已就绪。'))
+                        .catch(err => console.log('处于无痕模式或缓存被拦截，降级为在线加载，不影响猫窝展示。'));
+                });
+            }
+        } catch (error) {
+            console.log('浏览器严格限制，跳过离线堡垒部署。');
+        }
+
+        // 2. 大黑猫睁眼互动逻辑
         const catImg = document.getElementById('main-cat');
         let sleepTimer = null;
-        catImg.addEventListener('click', () => {
-            catImg.src = 'assets/头图-猫睁眼.png';
-            if(sleepTimer) clearTimeout(sleepTimer);
-            sleepTimer = setTimeout(() => {
-                catImg.src = 'assets/头图-猫闭眼.png';
-            }, 3500);
-        });
+
+        if (catImg) {
+            catImg.addEventListener('click', () => {
+                catImg.src = 'assets/头图-猫睁眼.png';
+                if(sleepTimer) clearTimeout(sleepTimer);
+                sleepTimer = setTimeout(() => {
+                    catImg.src = 'assets/头图-猫闭眼.png';
+                }, 3500);
+            });
+        }
     </script>
 </body>
 </html>
