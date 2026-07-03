@@ -1,28 +1,45 @@
-pngconst CACHE_NAME = 'cat-nest-v1';
-// 将你下午发给我的第一批核心视觉资产全部锁进本地缓存
+const CACHE_NAME = 'cat-nest-v2';
+// 替换为 V2.0 真正存在的新资产路径
 const ASSETS_TO_CACHE = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/assets/7.jpg', // 燕麦色背景纸
-  '/assets/微信图片_20260702181201_1460_66.png', // 闭眼主图
-  '/assets/已移除背景的4.png' // 日记本图标
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/assets/大底图.png',
+  '/assets/头图-垫子.png',
+  '/assets/头图-猫闭眼.png',
+  '/assets/头图-猫睁眼.png'
 ];
- 
+
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      console.log('大黑猫正在拼命帮你缓存绘本素材...');
-      return cache.addAll(ASSETS_TO_CACHE);
-    })
-  );
+  self.skipWaiting(); // 强制新版本立刻接管，不准排队
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log('大黑猫正在缓存 V2.0 终极魔法素材...');
+      return cache.addAll(ASSETS_TO_CACHE);
+    })
+  );
 });
- 
+
+self.addEventListener('activate', (event) => {
+  // 核心杀招：无情剿灭 V1.0 的所有旧缓存
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('旧猫窝缓存已彻底清理。');
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});
+
 self.addEventListener('fetch', (event) => {
-  event.respondWith(
-    caches.match(event.request).then((response) => {
-      // 优先从本地缓存读取，实现丝滑的离线无缝加载
-      return response || fetch(event.request);
-    })
-  );
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
+    })
+  );
 });
