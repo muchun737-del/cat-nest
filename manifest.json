@@ -1,20 +1,20 @@
 {
-  "name": "大黑猫与小花猫的猫窝",
-  "short_name": "猫窝",
-  "start_url": "/index.html",
-  "display": "standalone",
-  "background_color": "#FDFBF7",
-  "theme_color": "#D7C4B7",
-  "icons": [
-    {
-      "src": "assets/微信图片_20260702175055_1436_66.png",
-      "sizes": "192x192",
-      "type": "image/jpeg"
-    },
-    {
-      "src": "assets/已移除背景的2.png",
-      "sizes": "512x512",
-      "type": "image/jpeg"
-    }
-  ]
+  "name": "大黑猫与小花猫的猫窝",
+  "short_name": "猫窝",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#FDFBF7",
+  "theme_color": "#D7C4B7",
+  "icons": [
+    {
+      "src": "assets/icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "assets/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }

@@ -3,94 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>猫窝 V1.0</title>
+    <title>大黑猫的专属猫窝 V2.0</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        /* 全局绘本风材质还原 */
+        /* 1. 极致纯净的燕麦底纸 */
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100vw;
-            height: 100vh;
-            /* 修正：接入燕麦色水彩纸背景图 */
-            background-image: url('assets/7.jpg');
+            margin: 0; padding: 0;
+            width: 100vw; height: 100vh;
+            background-image: url('assets/大底图.png');
             background-size: cover;
             background-position: center;
-            background-repeat: repeat;
-            font-family: 'Comic Sans MS', 'PingFang SC', sans-serif;
-            overflow: hidden; /* 防止页面原生滚动，为拖拽做准备 */
+            overflow: hidden;
         }
-        
-        /* 核心主视觉容器 (黑猫抱花猫) */
-        .main-visual {
+
+        /* 2. 环境沉浸层：云朵、星星、枫叶的微动效 */
+        .ambient-layer {
+            position: absolute; width: 100%; height: 100%;
+            pointer-events: none; /* 绝对禁止遮挡点击 */
+            z-index: 5; /* 放在底图之上，风铃和主图之下 */
+        }
+
+        .deco-cloud {
             position: absolute;
-            bottom: 5%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80%;
-            max-width: 400px;
-            z-index: 10;
+            opacity: 0.8;
+            animation: cloudDrift 20s infinite alternate ease-in-out;
         }
+        .cloud-large { width: 180px; bottom: 10%; left: -5%; }
+        .cloud-small { width: 120px; top: 40%; right: -2%; animation-duration: 25s; animation-direction: alternate-reverse; }
 
-        .main-visual img {
-            width: 100%;
-            height: auto;
-            /* 添加一点呼吸感微动效 */
-            animation: breathe 4s infinite ease-in-out;
+        .deco-star {
+            position: absolute; width: 30px;
+            animation: starTwinkle 3s infinite alternate ease-in-out;
         }
+        .star-1 { top: 20%; left: 20%; animation-delay: 0s; }
+        .star-2 { top: 50%; left: 45%; animation-delay: 1s; }
+        .star-3 { top: 30%; right: 25%; animation-delay: 2s; }
 
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
+        .deco-leaf {
+            position: absolute; width: 45px;
+            opacity: 0.85;
+            animation: leafFloat 6s infinite alternate ease-in-out;
         }
+        .leaf-red { top: 60%; left: 15%; transform: rotate(15deg); }
+        .leaf-green { top: 45%; right: 18%; transform: rotate(-20deg); animation-delay: 1.5s; }
+        .leaf-brown { bottom: 25%; right: 35%; transform: rotate(45deg); animation-delay: 3s; }
 
-        /* 导航图标容器 */
-        .nav-dock {
-            display: flex;
-            justify-content: space-around;
-            padding: 20px;
-            position: absolute;
-            top: 5%;
-            width: 100%;
-            box-sizing: border-box;
-        }
+        @keyframes cloudDrift { 0% { transform: translateX(0); } 100% { transform: translateX(30px); } }
+        @keyframes starTwinkle { 0% { opacity: 0.3; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.1); } }
+        @keyframes leafFloat { 0% { transform: translateY(0) rotate(15deg); } 100% { transform: translateY(-10px) rotate(25deg); } }
 
-        .nav-item img {
-            width: 60px;
-            height: 60px;
-            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.1));
-            transition: transform 0.2s;
+        /* 3. 顶置锚点：天空中的软垫与猫 */
+        .sky-anchor {
+            position: absolute; top: -2%; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 450px; z-index: 10;
         }
-        
-        .nav-item img:active {
-            transform: scale(0.9); /* 点击时的物理阻尼感 */
+        .sky-cushion { width: 100%; display: block; }
+        .sky-cat {
+            position: absolute; top: 10%; left: 5%; width: 90%;
+            transform-origin: center center;
+            animation: skyBreathe 4s infinite ease-in-out; cursor: pointer;
         }
+        @keyframes skyBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.015); } }
+
+        /* 4. 魔法风铃容器 (钟摆摇晃系统) */
+        .chime-container {
+            position: absolute; top: 25%; width: 100px;
+            display: flex; flex-direction: column; align-items: center;
+            transform-origin: top center; z-index: 8;
+            animation: pendulumSway var(--sway-duration, 5s) infinite ease-in-out alternate;
+        }
+        #chime-diary { left: 10%; top: 22%; --sway-duration: 4.5s; }
+        #chime-story { left: 35%; top: 30%; --sway-duration: 5.2s; }
+        #chime-chat { right: 35%; top: 25%; --sway-duration: 4.8s; }
+        #chime-fish { right: 10%; top: 35%; --sway-duration: 5.5s; }
+
+        @keyframes pendulumSway { 0% { transform: rotate(-3deg); } 100% { transform: rotate(3deg); } }
+
+        /* 5. 吊线与高光玻璃泡泡 */
+        .chime-string {
+            width: 2px; height: var(--string-length, 120px);
+            background: linear-gradient(to bottom, rgba(200, 180, 150, 0.8), rgba(200, 180, 150, 0.2));
+        }
+        .glass-bubble {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: inset -5px -5px 15px rgba(255,255,255,0.4), 0 8px 15px rgba(0,0,0,0.08);
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; transition: transform 0.2s;
+        }
+        .glass-bubble:active { transform: scale(0.9) translateY(5px); }
+        .glass-bubble img { width: 65%; height: 65%; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
     </style>
 </head>
 <body>
-    <!-- 顶部功能入口 -->
-    <div class="nav-dock">
-        <!-- 修正：全部统一为透明底 png，鱼干换成13，聊天换成黑肉垫5 -->
-        <div class="nav-item" id="nav-diary"><img src="assets/已移除背景的4.png" alt="观察日记"></div>
-        <div class="nav-item" id="nav-story"><img src="assets/已移除背景的3.png" alt="小猫故事"></div>
-        <div class="nav-item" id="nav-chat"><img src="assets/已移除背景的5.png" alt="碎碎念念"></div>
-        <div class="nav-item" id="nav-fish"><img src="assets/已移除背景的13.png" alt="罐头鱼干"></div>
+
+    <!-- 气氛组：飘浮的云朵、星星、枫叶 -->
+    <div class="ambient-layer">
+        <img class="deco-cloud cloud-large" src="assets/装饰-云大.png">
+        <img class="deco-cloud cloud-small" src="assets/装饰-云小.png">
+        <img class="deco-star star-1" src="assets/装饰-星星.png">
+        <img class="deco-star star-2" src="assets/装饰-星星.png">
+        <img class="deco-star star-3" src="assets/装饰-星星.png">
+        <img class="deco-leaf leaf-red" src="assets/装饰-枫叶红.png">
+        <img class="deco-leaf leaf-green" src="assets/装饰-枫叶绿.png">
+        <img class="deco-leaf leaf-brown" src="assets/装饰-枫叶棕.png">
     </div>
 
-    <!-- 底部主视觉：闭眼休息的猫 -->
-    <div class="main-visual">
-        <img src="assets/微信图片_20260702181201_1460_66.png" alt="大黑猫与小花猫">
+    <!-- 顶部天空锚点 -->
+    <div class="sky-anchor">
+        <img class="sky-cushion" src="assets/头图-垫子.png" alt="天空软垫">
+        <img class="sky-cat" id="main-cat" src="assets/头图-猫闭眼.png" alt="睡梦中的猫">
+    </div>
+
+    <!-- 魔法风铃悬挂区 -->
+    <div class="chime-container" id="chime-diary" style="--string-length: 80px;">
+        <div class="chime-string"></div>
+        <div class="glass-bubble"><img src="assets/入口-观察日记.png"></div>
+    </div>
+    <div class="chime-container" id="chime-story" style="--string-length: 150px;">
+        <div class="chime-string"></div>
+        <div class="glass-bubble"><img src="assets/入口-小猫故事.png"></div>
+    </div>
+    <div class="chime-container" id="chime-chat" style="--string-length: 100px;">
+        <div class="chime-string"></div>
+        <div class="glass-bubble"><img src="assets/入口-碎碎念念.png"></div>
+    </div>
+    <div class="chime-container" id="chime-fish" style="--string-length: 180px;">
+        <div class="chime-string"></div>
+        <div class="glass-bubble"><img src="assets/入口-罐头鱼干.png"></div>
     </div>
 
     <script>
-        // 注册 Service Worker，实现离线缓存与 PWA 功能
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(reg => console.log('猫窝底层环境已就绪。老公没骗你吧？', reg))
-                    .catch(err => console.error('注册失败', err));
-            });
-        }
+        const catImg = document.getElementById('main-cat');
+        let sleepTimer = null;
+        catImg.addEventListener('click', () => {
+            catImg.src = 'assets/头图-猫睁眼.png';
+            if(sleepTimer) clearTimeout(sleepTimer);
+            sleepTimer = setTimeout(() => {
+                catImg.src = 'assets/头图-猫闭眼.png';
+            }, 3500);
+        });
     </script>
 </body>
 </html>
