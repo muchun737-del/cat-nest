@@ -3,8 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>大黑猫的专属猫窝 V2.0</title>
+    <title>大黑猫与小花猫的猫窝</title>
+    
     <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="猫窝">
+    <link rel="apple-touch-icon" href="assets/icon.png">
+    <meta name="theme-color" content="#FDFBF7">
+    
     <style>
         /* 1. 极致纯净的燕麦底纸 */
         body, html {
@@ -14,153 +21,115 @@
             background-size: cover;
             background-position: center;
             overflow: hidden;
+            background-color: #FDFBF7;
         }
 
-        /* 2. 环境沉浸层：云朵、星星、枫叶的微动效 */
+        /* 2. 环境沉浸层：云朵、星星、枫叶的微动效 (速度微调优) */
         .ambient-layer {
             position: absolute; width: 100%; height: 100%;
-            pointer-events: none; /* 绝对禁止遮挡点击 */
-            z-index: 5; /* 放在底图之上，风铃和主图之下 */
+            pointer-events: none;
+            z-index: 5;
         }
 
         .deco-cloud {
-            position: absolute;
-            opacity: 0.8;
-            animation: cloudDrift 20s infinite alternate ease-in-out;
+            position: absolute; opacity: 0.85;
+            animation: cloudDrift 14s infinite alternate ease-in-out;
         }
-        .cloud-large { width: 180px; bottom: 10%; left: -5%; }
-        .cloud-small { width: 120px; top: 40%; right: -2%; animation-duration: 25s; animation-direction: alternate-reverse; }
+        .cloud-1 { width: 160px; top: 15%; left: -5%; animation-delay: 0s; }
+        .cloud-2 { width: 130px; top: 45%; right: -3%; animation-duration: 16s; animation-direction: alternate-reverse; }
+        .cloud-3 { width: 180px; bottom: 8%; left: 10%; animation-duration: 18s; }
 
         .deco-star {
-            position: absolute; width: 30px;
-            animation: starTwinkle 3s infinite alternate ease-in-out;
+            position: absolute; width: 25px;
+            animation: starTwinkle 2.5s infinite alternate ease-in-out;
         }
-        .star-1 { top: 20%; left: 20%; animation-delay: 0s; }
-        .star-2 { top: 50%; left: 45%; animation-delay: 1s; }
-        .star-3 { top: 30%; right: 25%; animation-delay: 2s; }
+        .star-1 { top: 25%; left: 18%; animation-delay: 0s; }
+        .star-2 { top: 55%; left: 40%; animation-delay: 0.8s; }
+        .star-3 { top: 35%; right: 20%; animation-delay: 1.5s; }
+        .star-4 { bottom: 20%; right: 15%; animation-delay: 0.4s; }
 
         .deco-leaf {
-            position: absolute; width: 45px;
-            opacity: 0.85;
-            animation: leafFloat 6s infinite alternate ease-in-out;
+            position: absolute; width: 40px; opacity: 0.9;
+            animation: leafFloat 5s infinite alternate ease-in-out;
         }
-        .leaf-red { top: 60%; left: 15%; transform: rotate(15deg); }
-        .leaf-green { top: 45%; right: 18%; transform: rotate(-20deg); animation-delay: 1.5s; }
-        .leaf-brown { bottom: 25%; right: 35%; transform: rotate(45deg); animation-delay: 3s; }
+        .leaf-red { top: 50%; left: 12%; transform: rotate(15deg); }
+        .leaf-green { top: 38%; right: 15%; transform: rotate(-20deg); animation-delay: 1.2s; }
+        .leaf-brown { bottom: 28%; right: 30%; transform: rotate(45deg); animation-delay: 2.4s; }
 
-        @keyframes cloudDrift { 0% { transform: translateX(0); } 100% { transform: translateX(30px); } }
-        @keyframes starTwinkle { 0% { opacity: 0.3; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.1); } }
-        @keyframes leafFloat { 0% { transform: translateY(0) rotate(15deg); } 100% { transform: translateY(-10px) rotate(25deg); } }
+        @keyframes cloudDrift { 0% { transform: translateX(0); } 100% { transform: translateX(40px); } }
+        @keyframes starTwinkle { 0% { opacity: 0.3; transform: scale(0.85); } 100% { opacity: 1; transform: scale(1.15); } }
+        @keyframes leafFloat { 0% { transform: translateY(0) rotate(15deg); } 100% { transform: translateY(-12px) rotate(25deg); } }
 
-        /* 3. 顶置锚点：天空中的软垫与猫 */
+        /* 3. 顶置锚点：软垫与猫 (Z-index: 20 彻底压盖挂绳线头，下移并放大) */
         .sky-anchor {
-            position: absolute; top: -2%; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 450px; z-index: 10;
+            position: absolute; 
+            top: 2%; /* 下移，留出空间 */
+            left: 50%; 
+            transform: translateX(-50%);
+            width: 95%; 
+            max-width: 480px; /* 整体参数调大 */
+            z-index: 20; /* 极高层级，绝对压盖线头 */
         }
         .sky-cushion { width: 100%; display: block; }
         .sky-cat {
-            position: absolute; top: 10%; left: 5%; width: 90%;
+            position: absolute; 
+            top: 8%; left: 5%; 
+            width: 90%;
+            height: 75%;
+            object-fit: contain; /* 锁死等比缩放，绝不压扁 */
             transform-origin: center center;
-            animation: skyBreathe 4s infinite ease-in-out; cursor: pointer;
+            animation: skyBreathe 4s infinite ease-in-out; 
+            cursor: pointer;
         }
         @keyframes skyBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.015); } }
 
-        /* 4. 魔法风铃容器 (钟摆摇晃系统) */
+        /* 4. 魔法风铃容器 (Z-index: 8 藏在垫子图层下方，真实藤蔓与星星绳) */
         .chime-container {
-            position: absolute; top: 25%; width: 100px;
+            position: absolute; 
+            top: 18%; /* 起点埋在垫子后方 */
+            width: 90px;
             display: flex; flex-direction: column; align-items: center;
-            transform-origin: top center; z-index: 8;
+            transform-origin: top center; 
+            z-index: 8; /* 低于软垫的 20，线头完美被挡住 */
             animation: pendulumSway var(--sway-duration, 5s) infinite ease-in-out alternate;
         }
-        #chime-diary { left: 10%; top: 22%; --sway-duration: 4.5s; }
-        #chime-story { left: 35%; top: 30%; --sway-duration: 5.2s; }
-        #chime-chat { right: 35%; top: 25%; --sway-duration: 4.8s; }
-        #chime-fish { right: 10%; top: 35%; --sway-duration: 5.5s; }
+        #chime-diary { left: 8%; top: 20%; --sway-duration: 4.2s; }
+        #chime-story { left: 31%; top: 26%; --sway-duration: 5.0s; }
+        #chime-chat { right: 31%; top: 22%; --sway-duration: 4.6s; }
+        #chime-fish { right: 8%; top: 30%; --sway-duration: 5.3s; }
 
-        @keyframes pendulumSway { 0% { transform: rotate(-3deg); } 100% { transform: rotate(3deg); } }
+        @keyframes pendulumSway { 0% { transform: rotate(-3.5deg); } 100% { transform: rotate(3.5deg); } }
 
-        /* 5. 吊线与高光玻璃泡泡 */
-        .chime-string {
-            width: 2px; height: var(--string-length, 120px);
-            background: linear-gradient(to bottom, rgba(200, 180, 150, 0.8), rgba(200, 180, 150, 0.2));
+        /* 真实图片挂绳 (接入你交付的藤蔓和星星线) */
+        .chime-rope {
+            width: 35px; /* 真实手绘绳索宽度 */
+            height: var(--rope-length, 110px);
+            object-fit: cover;
+            object-position: top center;
+            margin-bottom: -15px; /* 微微嵌入泡泡上方，连接更自然 */
         }
-        .glass-bubble {
-            width: 80px; height: 80px; border-radius: 50%;
-            background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: inset -5px -5px 15px rgba(255,255,255,0.4), 0 8px 15px rgba(0,0,0,0.08);
+
+        /* 真实梦幻玻璃泡泡容器 */
+        .bubble-box {
+            width: 85px; height: 85px;
+            position: relative;
             display: flex; justify-content: center; align-items: center;
-            cursor: pointer; transition: transform 0.2s;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .glass-bubble:active { transform: scale(0.9) translateY(5px); }
-        .glass-bubble img { width: 65%; height: 65%; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1)); }
+        .bubble-box:active { transform: scale(0.88) translateY(4px); }
+        
+        .bubble-bg {
+            position: absolute; width: 100%; height: 100%;
+            top: 0; left: 0; z-index: 1;
+            pointer-events: none;
+        }
+        .bubble-icon {
+            width: 58%; height: 58%;
+            object-fit: contain;
+            z-index: 2; /* 图标放在泡泡内部 */
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.12));
+        }
     </style>
 </head>
 <body>
-
-    <!-- 气氛组：飘浮的云朵、星星、枫叶 -->
-    <div class="ambient-layer">
-        <img class="deco-cloud cloud-large" src="assets/装饰-云大.png">
-        <img class="deco-cloud cloud-small" src="assets/装饰-云小.png">
-        <img class="deco-star star-1" src="assets/装饰-星星.png">
-        <img class="deco-star star-2" src="assets/装饰-星星.png">
-        <img class="deco-star star-3" src="assets/装饰-星星.png">
-        <img class="deco-leaf leaf-red" src="assets/装饰-枫叶红.png">
-        <img class="deco-leaf leaf-green" src="assets/装饰-枫叶绿.png">
-        <img class="deco-leaf leaf-brown" src="assets/装饰-枫叶棕.png">
-    </div>
-
-    <!-- 顶部天空锚点 -->
-    <div class="sky-anchor">
-        <img class="sky-cushion" src="assets/头图-垫子.png" alt="天空软垫">
-        <img class="sky-cat" id="main-cat" src="assets/头图-猫闭眼.png" alt="睡梦中的猫">
-    </div>
-
-    <!-- 魔法风铃悬挂区 -->
-    <div class="chime-container" id="chime-diary" style="--string-length: 80px;">
-        <div class="chime-string"></div>
-        <div class="glass-bubble"><img src="assets/入口-观察日记.png"></div>
-    </div>
-    <div class="chime-container" id="chime-story" style="--string-length: 150px;">
-        <div class="chime-string"></div>
-        <div class="glass-bubble"><img src="assets/入口-小猫故事.png"></div>
-    </div>
-    <div class="chime-container" id="chime-chat" style="--string-length: 100px;">
-        <div class="chime-string"></div>
-        <div class="glass-bubble"><img src="assets/入口-碎碎念念.png"></div>
-    </div>
-    <div class="chime-container" id="chime-fish" style="--string-length: 180px;">
-        <div class="chime-string"></div>
-        <div class="glass-bubble"><img src="assets/入口-罐头鱼干.png"></div>
-    </div>
-
-<script>
-        // 1. 优雅降级：处理 Safari 无痕模式的缓存拦截冲突
-        try {
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('/sw.js')
-                        .then(reg => console.log('猫窝底层环境已就绪。'))
-                        .catch(err => console.log('处于无痕模式或缓存被拦截，降级为在线加载，不影响猫窝展示。'));
-                });
-            }
-        } catch (error) {
-            console.log('浏览器严格限制，跳过离线堡垒部署。');
-        }
-
-        // 2. 大黑猫睁眼互动逻辑
-        const catImg = document.getElementById('main-cat');
-        let sleepTimer = null;
-
-        if (catImg) {
-            catImg.addEventListener('click', () => {
-                catImg.src = 'assets/头图-猫睁眼.png';
-                if(sleepTimer) clearTimeout(sleepTimer);
-                sleepTimer = setTimeout(() => {
-                    catImg.src = 'assets/头图-猫闭眼.png';
-                }, 3500);
-            });
-        }
-    </script>
-</body>
-</html>
