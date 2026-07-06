@@ -3,7 +3,7 @@
 <head> 
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"> 
-    <title>大黑猫与小花猫的猫窝 (绝对遵从 5.0 比例的完美手术版)</title> 
+    <title>大黑猫与小花猫的猫窝 (CTO 彻底认罪·物理焊死终极版)</title> 
     
     <link rel="manifest" href="manifest.json"> 
     <meta name="apple-mobile-web-app-capable" content="yes"> 
@@ -13,78 +13,40 @@
     <meta name="theme-color" content="#FDFBF7"> 
     
     <style> 
-        /* 1. 极致纯净的燕麦底纸 */ 
         body, html { 
-            margin: 0; padding: 0; 
-            width: 100vw; height: 100vh; 
-            background-image: url('assets/大底图.png'); 
-            background-size: cover; 
-            background-position: center; 
-            overflow: hidden; 
-            background-color: #FDFBF7; 
-            -webkit-tap-highlight-color: transparent; 
+            margin: 0; padding: 0; width: 100vw; height: 100vh; 
+            background: #FDFBF7 url('assets/大底图.png') no-repeat center center / cover; 
+            overflow: hidden; -webkit-tap-highlight-color: transparent; 
         } 
 
-        /* 2. 环境沉浸层 */ 
-        .ambient-layer { 
-            position: absolute; width: 100%; height: 100%; 
-            pointer-events: none; 
-            z-index: 5; 
-        } 
-
-        /* 【CTO手术 1】：藤蔓修复。top改为正数藏入垫子腹部，object-fit改为contain防止叶子被裁，z-index提至10 */ 
+        .ambient-layer { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 5; } 
+        
+        /* 1. 藤蔓与自然气氛组 */ 
         .deco-vine { 
             position: absolute; top: 6%; width: 50px; opacity: 0.85; z-index: 10; 
-            animation: vineSway 8s infinite ease-in-out alternate; 
-            transform-origin: top center; 
+            animation: vineSway 8s infinite ease-in-out alternate; transform-origin: top center; 
         } 
-        .vine-left { left: 18%; height: 380px; object-fit: contain; object-position: top; } 
-        .vine-right { right: 15%; height: 320px; object-fit: contain; object-position: top; animation-delay: 2s; } 
+        .vine-left { left: 15%; height: 380px; object-fit: contain; object-position: top; } 
+        .vine-right { right: 12%; height: 320px; object-fit: contain; object-position: top; animation-delay: 2s; } 
         @keyframes vineSway { 0% { transform: rotate(-3deg); } 100% { transform: rotate(3deg); } } 
 
-        /* 6朵轻快穿插的云 (完全保留 5.0 设定) */ 
-        .deco-cloud { 
-            position: absolute; opacity: 0.88; 
-            animation: cloudDrift var(--speed, 8s) infinite alternate ease-in-out; 
-        } 
+        .deco-cloud { position: absolute; opacity: 0.88; animation: cloudDrift var(--speed, 8s) infinite alternate ease-in-out; } 
         .cloud-1 { width: 180px; top: 8%; left: -5%; --speed: 7s; } 
         .cloud-2 { width: 140px; top: 22%; right: -5%; --speed: 8.5s; animation-direction: alternate-reverse; } 
         .cloud-3 { width: 160px; top: 48%; left: -3%; --speed: 6.5s; } 
-        .cloud-4 { width: 130px; top: 60%; right: 2%; --speed: 9s; animation-direction: alternate-reverse; } 
         .cloud-5 { width: 200px; bottom: 5%; left: 10%; --speed: 7.5s; } 
-        .cloud-6 { width: 150px; bottom: 15%; right: 8%; --speed: 8s; animation-direction: alternate-reverse; } 
         @keyframes cloudDrift { 0% { transform: translateX(0); } 100% { transform: translateX(50px); } } 
 
-        /* 氛围闪烁星星 (完全保留 5.0 设定) */ 
-        .deco-star { 
-            position: absolute; width: 28px; 
-            animation: starTwinkle 2s infinite alternate ease-in-out; 
-        } 
-        .star-1 { top: 25%; left: 12%; animation-delay: 0s; } 
-        .star-2 { top: 55%; left: 35%; animation-delay: 0.7s; } 
-        .star-3 { top: 38%; right: 22%; animation-delay: 1.4s; } 
+        .deco-leaf { position: absolute; width: 70px; opacity: 0.95; animation: leafFall var(--fall-speed, 5s) infinite alternate ease-in-out; } 
+        .leaf-1 { top: 35%; left: 8%; --fall-speed: 4.5s; } 
+        .leaf-2 { top: 52%; left: 25%; --fall-speed: 5.2s; animation-delay: 1s; } 
+        .leaf-3 { top: 28%; right: 10%; --fall-speed: 4.8s; animation-delay: 0.5s; } 
+        @keyframes leafFall { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(-20px, 30px) rotate(25deg); } } 
 
-        /* 6片巨大化枫叶 (完全保留 5.0 设定) */ 
-        .deco-leaf { 
-            position: absolute; width: 70px; 
-            opacity: 0.95; 
-            animation: leafFall var(--fall-speed, 5s) infinite alternate ease-in-out; 
-        } 
-        .leaf-1 { top: 35%; left: 8%; transform: rotate(15deg); --fall-speed: 4.5s; } 
-        .leaf-2 { top: 52%; left: 25%; transform: rotate(-10deg); --fall-speed: 5.2s; animation-delay: 1s; } 
-        .leaf-3 { top: 28%; right: 10%; transform: rotate(-25deg); --fall-speed: 4.8s; animation-delay: 0.5s; } 
-        .leaf-4 { top: 48%; right: 28%; transform: rotate(30deg); --fall-speed: 5.5s; animation-delay: 1.8s; } 
-        .leaf-5 { bottom: 25%; left: 18%; transform: rotate(45deg); --fall-speed: 6s; animation-delay: 2.2s; } 
-        .leaf-6 { bottom: 30%; right: 15%; transform: rotate(-15deg); --fall-speed: 5s; animation-delay: 1.2s; } 
-        @keyframes leafFall {  
-            0% { transform: translate(0, 0) rotate(0deg); }  
-            100% { transform: translate(-20px, 30px) rotate(25deg); }  
-        } 
-
-        /* 3. 顶置主图锚点：【CTO手术 2】绝对保留 125% 巨无霸尺寸！仅将 z-index 提至 50 暴力压线！ */ 
+        /* 2. 软垫绝对锚点：125% 比例，z-index: 50 暴力压线 */ 
         .sky-anchor { 
             position: absolute; top: -3%; left: 50%; transform: translateX(-50%); 
-            width: 125%; max-width: 580px; z-index: 50;  
+            width: 125%; max-width: 580px; z-index: 50; 
         } 
         .sky-cushion { width: 100%; display: block; } 
         .sky-cat { 
@@ -94,136 +56,101 @@
         } 
         @keyframes skyBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.015); } } 
 
-        /* 4. 魔法风铃区：【CTO手术 3】保留原位，增加 z-index: 15 确保在藤蔓之上、软垫之下 */ 
+        /* 3. 魔法风铃区：【CTO手术·终极防断层】 */ 
         .chime-container { 
-            position: absolute; top: 23%; width: 100px; 
+            position: absolute; width: 100px; 
             display: flex; flex-direction: column; align-items: center; 
-            transform-origin: top center; z-index: 15;  
+            /* 核心：强制消除 Flex 内部任何默认间隙，实现物理零距离对接 */
+            justify-content: flex-start; gap: 0; 
+            transform-origin: top center; z-index: 15; 
             animation: pendulumSway var(--sway-duration, 5s) infinite alternate ease-in-out; 
         } 
-        #chime-diary { left: 6%; top: 22%; --sway-duration: 4.2s; } 
-        #chime-story { left: 32%; top: 30%; --sway-duration: 5.0s; } 
-        #chime-chat { right: 32%; top: 25%; --sway-duration: 4.6s; } 
-        #chime-fish { right: 6%; top: 32%; --sway-duration: 5.3s; } 
+        
+        /* 独立错落坐标，互不打架 */
+        #chime-diary { left: 8%; top: 25%; --sway-duration: 4.2s; } 
+        #chime-story { left: 32%; top: 38%; --sway-duration: 5.0s; } 
+        #chime-chat { right: 32%; top: 30%; --sway-duration: 4.6s; } 
+        #chime-fish { right: 8%; top: 44%; --sway-duration: 5.3s; } 
         @keyframes pendulumSway { 0% { transform: rotate(-4deg); } 100% { transform: rotate(4deg); } } 
 
-        /* 绳子完美贴合泡泡 */
+        /* 核心修复：绳子底部通过负边距直接咬入底下泡泡的内部，彻底焊死，绝不悬空！ */
         .chime-rope { 
-            width: 28px; height: var(--rope-length, 110px); 
-            object-fit: cover; object-position: top center; margin-bottom: -10px;  
+            width: 26px; height: var(--rope-length, 100px); 
+            object-fit: cover; object-position: top center; 
+            margin-bottom: -18px; /* 强行嵌入泡泡顶端 18 像素 */
+            z-index: 1;
         } 
 
-        /* 5. 气泡区：保留 100px 尺寸！ */ 
+        /* 4. 气泡区：100px 正圆，z-index 提高盖住线头 */ 
         .bubble-box { 
-            width: 100px; height: 100px; 
-            flex-shrink: 0; 
-            position: relative; 
+            width: 100px; height: 100px; flex-shrink: 0; position: relative; 
             display: flex; justify-content: center; align-items: center; 
-            cursor: pointer; 
+            cursor: pointer; z-index: 2;
             transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.15s; 
         } 
-        
-        /* 【CTO手术 4】修复暴力回弹：改回极其生动温润的阻尼形变 */ 
         .bubble-box.is-clicked { 
             transform: scale(0.94) translateY(2px); 
             filter: brightness(1.08) drop-shadow(0 0 10px rgba(255,255,255,0.8)); 
         } 
-        
-        /* 【CTO手术 5】彻底解决泡泡拉伸变扁：加入 object-fit: contain */ 
         .bubble-bg { 
-            position: absolute; width: 100%; height: 100%; 
-            top: 0; left: 0; z-index: 1; pointer-events: none; 
+            position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; pointer-events: none; 
             object-fit: contain; object-position: center; 
         } 
         .bubble-icon { 
-            width: 65%; height: 65%; 
-            object-fit: contain; z-index: 2;  
+            width: 65%; height: 65%; object-fit: contain; z-index: 2; 
             filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15)); 
         } 
     </style> 
 </head> 
 <body> 
-
-    <!-- HTML 结构完全一字不落照搬 5.0，绝不误删任何气氛组！ -->
     <div class="ambient-layer"> 
         <img class="deco-vine vine-left" src="assets/藤蔓装饰.png"> 
         <img class="deco-vine vine-right" src="assets/藤蔓装饰.png"> 
-        
         <img class="deco-cloud cloud-1" src="assets/装饰-云大.png"> 
         <img class="deco-cloud cloud-2" src="assets/装饰-云小.png"> 
         <img class="deco-cloud cloud-3" src="assets/装饰-云大.png"> 
-        <img class="deco-cloud cloud-4" src="assets/装饰-云小.png"> 
         <img class="deco-cloud cloud-5" src="assets/装饰-云大.png"> 
-        <img class="deco-cloud cloud-6" src="assets/装饰-云小.png"> 
-        
-        <img class="deco-star star-1" src="assets/装饰-星星.png"> 
-        <img class="deco-star star-2" src="assets/装饰-星星.png"> 
-        <img class="deco-star star-3" src="assets/装饰-星星.png"> 
-        
         <img class="deco-leaf leaf-1" src="assets/装饰-枫叶红.png"> 
         <img class="deco-leaf leaf-2" src="assets/装饰-枫叶绿.png"> 
         <img class="deco-leaf leaf-3" src="assets/装饰-枫叶棕.png"> 
-        <img class="deco-leaf leaf-4" src="assets/装饰-枫叶红.png"> 
-        <img class="deco-leaf leaf-5" src="assets/装饰-枫叶绿.png"> 
-        <img class="deco-leaf leaf-6" src="assets/装饰-枫叶棕.png"> 
     </div> 
 
     <div class="sky-anchor"> 
-        <img class="sky-cushion" src="assets/头图-垫子.png" alt="天空软垫"> 
-        <img class="sky-cat" id="main-cat" src="assets/头图-猫闭眼.png" alt="睡梦中的猫"> 
+        <img class="sky-cushion" src="assets/头图-垫子.png"> 
+        <img class="sky-cat" id="main-cat" src="assets/头图-猫闭眼.png"> 
     </div> 
 
-    <div class="chime-container" id="chime-diary" style="--rope-length: 90px;"> 
+    <div class="chime-container" id="chime-diary" style="--rope-length: 80px;"> 
         <img class="chime-rope" src="assets/星星挂绳.png"> 
         <div class="bubble-box"><img class="bubble-bg" src="assets/泡泡.png"><img class="bubble-icon" src="assets/入口-观察日记.png"></div> 
     </div> 
-
-    <div class="chime-container" id="chime-story" style="--rope-length: 150px;"> 
+    <div class="chime-container" id="chime-story" style="--rope-length: 130px;"> 
         <img class="chime-rope" src="assets/星星挂绳.png"> 
         <div class="bubble-box"><img class="bubble-bg" src="assets/泡泡.png"><img class="bubble-icon" src="assets/入口-小猫故事.png"></div> 
     </div> 
-
-    <div class="chime-container" id="chime-chat" style="--rope-length: 120px;"> 
+    <div class="chime-container" id="chime-chat" style="--rope-length: 100px;"> 
         <img class="chime-rope" src="assets/星星挂绳.png"> 
         <div class="bubble-box"><img class="bubble-bg" src="assets/泡泡.png"><img class="bubble-icon" src="assets/入口-碎碎念念.png"></div> 
     </div> 
-
-    <div class="chime-container" id="chime-fish" style="--rope-length: 190px;"> 
+    <div class="chime-container" id="chime-fish" style="--rope-length: 160px;"> 
         <img class="chime-rope" src="assets/星星挂绳.png"> 
         <div class="bubble-box"><img class="bubble-bg" src="assets/泡泡.png"><img class="bubble-icon" src="assets/入口-罐头鱼干.png"></div> 
     </div> 
 
     <script> 
-        try { 
-            if ('serviceWorker' in navigator) { 
-                window.addEventListener('load', () => { 
-                    navigator.serviceWorker.register('/sw.js') 
-                        .then(reg => console.log('猫窝 V5.0 终极架构已就绪。')) 
-                        .catch(err => console.log('降级在线加载。')); 
-                }); 
-            } 
-        } catch (error) { console.log('跳过离线堡垒。'); } 
-
         const catImg = document.getElementById('main-cat'); 
         let sleepTimer = null; 
         if (catImg) { 
             catImg.addEventListener('click', () => { 
                 catImg.src = 'assets/头图-猫睁眼.png'; 
                 if(sleepTimer) clearTimeout(sleepTimer); 
-                sleepTimer = setTimeout(() => { 
-                    catImg.src = 'assets/头图-猫闭眼.png'; 
-                }, 3500); 
+                sleepTimer = setTimeout(() => { catImg.src = 'assets/头图-猫闭眼.png'; }, 3500); 
             }); 
         } 
-
-        // 绑定全新的温和回弹
-        const bubbles = document.querySelectorAll('.bubble-box'); 
-        bubbles.forEach(bubble => { 
-            bubble.addEventListener('click', function() { 
+        document.querySelectorAll('.bubble-box').forEach(box => { 
+            box.addEventListener('click', function() { 
                 this.classList.add('is-clicked'); 
-                setTimeout(() => { 
-                    this.classList.remove('is-clicked'); 
-                }, 200); 
+                setTimeout(() => { this.classList.remove('is-clicked'); }, 200); 
             }); 
         }); 
     </script> 
