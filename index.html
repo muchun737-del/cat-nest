@@ -1,187 +1,35 @@
-<!DOCTYPE html> 
-<html lang="zh-CN"> 
-<head> 
-    <meta charset="UTF-8"> 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"> 
-    <title>大黑猫与小花猫的猫窝 (霍沉亲手重构·铁血绝对锚点版)</title> 
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>绘本风猫窝主页 - 终极纯净版</title>
+  <link rel="apple-touch-icon" href="https://cat-nest-sandy.vercel.app/assets/icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="cat-nest-container">
     
-    <link rel="manifest" href="manifest.json"> 
-    <meta name="apple-mobile-web-app-capable" content="yes"> 
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> 
-    <meta name="apple-mobile-web-app-title" content="猫窝"> 
-    <link rel="apple-touch-icon" href="assets/icon.png"> 
-    <meta name="theme-color" content="#FDFBF7"> 
+    <header class="cushion-banner">
+      <img class="sky-cushion" src="https://cat-nest-sandy.vercel.app/assets/头图-垫子.png" alt="底垫">
+      <img class="sky-cat" id="main-cat" src="https://cat-nest-sandy.vercel.app/assets/头图-猫闭眼.png" alt="黑猫">
+    </header>
     
-    <style> 
-        /* 1. 彻底斩断状态栏白边，全页面沉浸铺底 */
-        html { background-color: #FDFBF7; }
-        body { 
-            margin: 0; padding: 0; width: 100vw; height: 100vh; height: 100dvh; 
-            background: #FDFBF7 url('assets/大底图.png') no-repeat top center / cover; 
-            overflow: hidden; -webkit-tap-highlight-color: transparent; 
-            overscroll-behavior-y: none; 
-        } 
-
-        .ambient-layer { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 5; } 
-        
-        /* 2. 藤蔓改造：宽度拉大到 140px，定位在垫子深腹部 (top: 8%)，被 z-index: 50 暴力盖住！ */ 
-        .deco-vine { 
-            position: absolute; top: 8%; width: 140px; opacity: 0.95; z-index: 10; 
-            animation: vineSway 8s infinite ease-in-out alternate; transform-origin: top center; 
-        } 
-        .vine-left { left: 3%; height: auto; object-fit: contain; object-position: top; } 
-        .vine-right { right: 2%; height: auto; object-fit: contain; object-position: top; animation-delay: 2s; } 
-        @keyframes vineSway { 0% { transform: rotate(-3deg); } 100% { transform: rotate(3deg); } } 
-
-        /* 8朵快云、9片多色枫叶，绝对一个不漏全量实装 */ 
-        .deco-cloud { position: absolute; opacity: 0.88; animation: cloudDrift var(--speed, 8s) infinite alternate ease-in-out; } 
-        .cloud-1 { width: 180px; top: 5%; left: -5%; --speed: 7s; } 
-        .cloud-2 { width: 150px; top: 18%; right: -5%; --speed: 8.5s; animation-direction: alternate-reverse; } 
-        .cloud-3 { width: 160px; top: 38%; left: -3%; --speed: 6.5s; } 
-        .cloud-4 { width: 140px; top: 52%; right: 2%; --speed: 9s; animation-direction: alternate-reverse; } 
-        .cloud-5 { width: 210px; bottom: 6%; left: 8%; --speed: 7.5s; } 
-        .cloud-6 { width: 160px; bottom: 16%; right: 4%; --speed: 8s; animation-direction: alternate-reverse; } 
-        .cloud-7 { width: 130px; top: 68%; left: 20%; --speed: 7.8s; } 
-        .cloud-8 { width: 170px; top: 80%; right: 18%; --speed: 6.8s; } 
-        @keyframes cloudDrift { 0% { transform: translateX(0); } 100% { transform: translateX(50px); } } 
-
-        .deco-leaf { position: absolute; width: 70px; opacity: 0.95; animation: leafFall var(--fall-speed, 5s) infinite alternate ease-in-out; } 
-        .leaf-1 { top: 25%; left: 8%; --fall-speed: 4.5s; } 
-        .leaf-2 { top: 42%; left: 22%; --fall-speed: 5.2s; animation-delay: 1s; } 
-        .leaf-3 { top: 20%; right: 12%; --fall-speed: 4.8s; animation-delay: 0.5s; } 
-        .leaf-4 { top: 48%; right: 25%; --fall-speed: 5.5s; animation-delay: 1.8s; } 
-        .leaf-5 { bottom: 28%; left: 18%; --fall-speed: 6s; animation-delay: 2.2s; } 
-        .leaf-6 { bottom: 35%; right: 15%; --fall-speed: 5s; animation-delay: 1.2s; } 
-        .leaf-7 { top: 65%; left: 10%; --fall-speed: 4.9s; animation-delay: 0.8s; } 
-        .leaf-8 { top: 75%; right: 10%; --fall-speed: 5.7s; animation-delay: 1.5s; } 
-        .leaf-9 { bottom: 12%; left: 38%; --fall-speed: 5.1s; animation-delay: 2.0s; } 
-        @keyframes leafFall { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(-20px, 30px) rotate(25deg); } } 
-
-        /* 3. 软垫压阵：125% 比例撑开，z-index: 50，暴力压盖一切线头 */ 
-        .sky-anchor { 
-            position: absolute; top: -3%; left: 50%; transform: translateX(-50%); 
-            width: 125%; max-width: 580px; z-index: 50; pointer-events: none; 
-        } 
-        .sky-cushion { width: 100%; display: block; } 
-        .sky-cat { 
-            position: absolute; top: 12%; left: 8%; width: 85%; height: 75%; 
-            object-fit: contain; transform-origin: center center; 
-            animation: skyBreathe 4s infinite ease-in-out; cursor: pointer; pointer-events: auto; 
-        } 
-        @keyframes skyBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.015); } } 
-
-        /* 4. 终极防消失容器：放弃浮动算式！全部采用安全百分比绝对定位，无论如何都绝不溢出屏幕！ */ 
-        .chime-container { 
-            position: absolute; 
-            width: var(--bubble-size, 130px); 
-            display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 0; 
-            transform-origin: top center; z-index: 15; 
-            animation: pendulumSway var(--sway-duration, 5s) infinite alternate ease-in-out; 
-        } 
-        
-        /* 🔥 像素级实现你的指示：绝不丢失任何一个图标！ */
-        /* 左1日记：泡泡130px大，图标放大，位置下调至安全带 22% */
-        #chime-diary { left: 6%; top: 22%; --rope-len: 110px; --bubble-size: 130px; --icon-size: 74%; --sway-duration: 4.2s; } 
-        
-        /* 左2毛线球：泡泡130px大，位置大幅上调至 16%，营造错落感 */
-        #chime-chat { left: 30%; top: 16%; --rope-len: 75px; --bubble-size: 130px; --icon-size: 58%; --sway-duration: 4.6s; } 
-        
-        /* 左3纸飞机：泡泡130px大，【图标强行缩小为 46%】，位置下调至 25% */
-        #chime-story { right: 30%; top: 25%; --rope-len: 125px; --bubble-size: 130px; --icon-size: 46%; --sway-duration: 5.0s; } 
-        
-        /* 左4玻璃罐：泡泡130px大，【位置大幅上调至 14%】！死死咬在安全区内，绝对不再消失！ */
-        #chime-fish { right: 6%; top: 14%; --rope-len: 65px; --bubble-size: 130px; --icon-size: 74%; --sway-duration: 5.3s; } 
-        
-        @keyframes pendulumSway { 0% { transform: rotate(-4deg); } 100% { transform: rotate(4deg); } } 
-
-        /* 星星绳全面加粗为 45px，并使用 -35px 极度负边距直接插进泡泡腹部，物理死锁！ */ 
-        .chime-rope { 
-            width: 45px; height: var(--rope-len); 
-            background: url('assets/星星挂绳.png') repeat-y top center; background-size: 100% auto;
-            margin-bottom: -35px; z-index: 1; position: relative;
-        } 
-
-        /* 泡泡全域放大至 130px 巨无霸，呈现极致清爽比例！ */ 
-        .bubble-box { 
-            width: var(--bubble-size); height: var(--bubble-size); flex-shrink: 0; position: relative; 
-            display: flex; justify-content: center; align-items: center; 
-            cursor: pointer; z-index: 2; 
-            transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.15s; 
-        } 
-        .bubble-box.is-clicked { 
-            transform: scale(0.94) translateY(2px); filter: brightness(1.08) drop-shadow(0 0 10px rgba(255,255,255,0.8)); 
-        } 
-        .bubble-bg { 
-            position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; pointer-events: none; 
-            object-fit: contain; object-position: center; 
-        } 
-        .bubble-icon { 
-            width: var(--icon-size); height: var(--icon-size); object-fit: contain; z-index: 2; 
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15)); 
-        } 
-    </style> 
-</head> 
-<body> 
-    <div class="ambient-layer"> 
-        <img class="deco-vine vine-left" src="assets/藤蔓装饰.png"> 
-        <img class="deco-vine vine-right" src="assets/藤蔓装饰.png"> 
-        <img class="deco-cloud cloud-1" src="assets/装饰-云大.png"> 
-        <img class="deco-cloud cloud-2" src="assets/装饰-云小.png"> 
-        <img class="deco-cloud cloud-3" src="assets/装饰-云大.png"> 
-        <img class="deco-cloud cloud-4" src="assets/装饰-云小.png"> 
-        <img class="deco-cloud cloud-5" src="assets/装饰-云大.png"> 
-        <img class="deco-cloud cloud-6" src="assets/装饰-云小.png"> 
-        <img class="deco-cloud cloud-7" src="assets/装饰-云大.png"> 
-        <img class="deco-cloud cloud-8" src="assets/装饰-云小.png"> 
-        <img class="deco-leaf leaf-1" src="assets/装饰-枫叶红.png"> 
-        <img class="deco-leaf leaf-2" src="assets/装饰-枫叶绿.png"> 
-        <img class="deco-leaf leaf-3" src="assets/装饰-枫叶棕.png"> 
-        <img class="deco-leaf leaf-4" src="assets/装饰-枫叶红.png"> 
-        <img class="deco-leaf leaf-5" src="assets/装饰-枫叶绿.png"> 
-        <img class="deco-leaf leaf-6" src="assets/装饰-枫叶棕.png"> 
-        <img class="deco-leaf leaf-7" src="assets/装饰-枫叶红.png"> 
-        <img class="deco-leaf leaf-8" src="assets/装饰-枫叶绿.png"> 
-        <img class="deco-leaf leaf-9" src="assets/装饰-枫叶棕.png"> 
-    </div> 
-
-    <div class="sky-anchor"> 
-        <img class="sky-cushion" src="assets/头图-垫子.png"> 
-        <img class="sky-cat" id="main-cat" src="assets/头图-猫闭眼.png"> 
-    </div> 
-
-    <div class="chime-container" id="chime-diary"> 
-        <div class="chime-rope"></div> 
-        <div class="bubble-box"><img class="bubble-bg" src="assets/泡泡.png"><img class="bubble-icon" src="assets/入口-观察日记.png"></div> 
-    </div> 
-    <div class="chime-container" id="chime-chat"> 
-        <div class="chime-rope"></div> 
-        <div class="bubble-box"><img class="bubble-bg" src="assets/泡泡.png"><img class="bubble-icon" src="assets/入口-碎碎念念.png"></div> 
-    </div> 
-    <div class="chime-container" id="chime-story"> 
-        <div class="chime-rope"></div> 
-        <div class="bubble-box"><img class="bubble-bg" src="assets/泡泡.png"><img class="bubble-icon" src="assets/入口-小猫故事.png"></div> 
-    </div> 
-    <div class="chime-container" id="chime-fish"> 
-        <div class="chime-rope"></div> 
-        <div class="bubble-box"><img class="bubble-bg" src="assets/泡泡.png"><img class="bubble-icon" src="assets/入口-罐头鱼干.png"></div> 
-    </div> 
-
-    <script> 
-        const catImg = document.getElementById('main-cat'); 
-        let sleepTimer = null; 
-        if (catImg) { 
-            catImg.addEventListener('click', () => { 
-                catImg.src = 'assets/头图-猫睁眼.png'; 
-                if(sleepTimer) clearTimeout(sleepTimer); 
-                sleepTimer = setTimeout(() => { catImg.src = 'assets/头图-猫闭眼.png'; }, 3500); 
-            }); 
-        } 
-        document.querySelectorAll('.bubble-box').forEach(box => { 
-            box.addEventListener('click', function() { 
-                this.classList.add('is-clicked'); 
-                setTimeout(() => { this.classList.remove('is-clicked'); }, 200); 
-            }); 
-        }); 
-    </script> 
-</body> 
+    <section class="chimes-stage">
+      <div class="chime-bubble bubble-1">
+        <img class="bubble-icon" src="https://cat-nest-sandy.vercel.app/assets/入口-观察日记.png" alt="观察日记">
+      </div>
+      <div class="chime-bubble bubble-2">
+        <img class="bubble-icon" src="https://cat-nest-sandy.vercel.app/assets/入口-碎碎念念.png" alt="碎碎念念">
+      </div>
+      <div class="chime-bubble bubble-3">
+        <img class="bubble-icon" src="https://cat-nest-sandy.vercel.app/assets/入口-小猫故事.png" alt="小猫故事">
+      </div>
+      <div class="chime-bubble bubble-4">
+        <img class="bubble-icon" src="https://cat-nest-sandy.vercel.app/assets/入口-罐头鱼干.png" alt="罐头鱼干">
+      </div>
+    </section>
+    
+  </main>
+</body>
 </html>

@@ -1,0 +1,153 @@
+/* ==========================================
+   1. 底层配置与防回弹泛白死锁
+   ========================================== */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: #FDFBF7 url('https://cat-nest-sandy.vercel.app/assets/大底图.png') no-repeat top center / cover;
+  overscroll-behavior-y: none; /* 强行拦截 iOS/Android 下拉回弹泛白 */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ==========================================
+   2. 主容器架构 (现代视口 + 底部安全区)
+   ========================================== */
+.cat-nest-container {
+  width: 100%;
+  height: 100dvh; /* 现代动态视口，防底部地址栏吞噬 */
+  max-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow-x: hidden;
+  overflow-y: hidden; /* 沉浸式单屏死锁 */
+  box-sizing: border-box;
+  padding-bottom: env(safe-area-inset-bottom); /* 苹果底部虚拟条安全区保护 */
+}
+
+/* ==========================================
+   3. 顶部软垫容器 (精修：物理下沉，拯救黑猫耳朵)
+   ========================================== */
+.cushion-banner {
+  position: relative;
+  width: 125%;
+  height: 26dvh; /* 维持 70% 级别的充裕比例 */
+  align-self: center;
+  flex-shrink: 0;
+  z-index: 50; /* 绝对最高层级，物理压死下方所有的挂绳线头 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-1.5%); /* 废除原-8%！大幅下落释放顶部，保证猫耳 100% 完整显示 */
+}
+
+.sky-cushion {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* 完整保留椭圆垂耳造型，无裁切 */
+  pointer-events: none;
+}
+
+.sky-cat {
+  position: relative;
+  height: 100%; 
+  width: auto;
+  object-fit: contain;
+  z-index: 51;
+  pointer-events: none;
+  transform: translateY(3%) scale(0.96); /* 差分协同：软垫多下来，黑猫少下来，营造物理包裹重心 */
+}
+
+/* ==========================================
+   4. 风铃气泡舞台 (视觉重心协同)
+   ========================================== */
+.chimes-stage {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: -2dvh; 
+  padding: 0 0 4dvh 0;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
+}
+
+/* ==========================================
+   5. 风铃气泡核心 (严密保护：堆叠上下文独立隔离)
+   ========================================== */
+.chime-bubble {
+  width: clamp(80px, 22vw, 140px);
+  aspect-ratio: 1 / 1;
+  flex-shrink: 1;
+  background: url('https://cat-nest-sandy.vercel.app/assets/泡泡.png') no-repeat center center / contain;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2; /* 声明气泡实体层级 */
+  isolation: isolate; /* 核心防穿模：严密锁死伪元素层级，拉绳绝不溢出正面 */
+}
+
+/* ==========================================
+   6. 终极挂绳架构：垂直平铺 + 精准多维绳高校准
+   ========================================== */
+.chime-bubble::before {
+  content: "";
+  position: absolute;
+  bottom: 50%; /* 直扎泡泡靶心，绝对无断层 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px; /* 高分屏下颗粒饱满清晰 */
+  background: url('https://cat-nest-sandy.vercel.app/assets/星星挂绳.png') repeat-y bottom center / 100% auto;
+  z-index: -1; /* 锁死在气泡图层正后方 */
+  pointer-events: none;
+}
+
+/* 空间坐标重配：解决两侧绳高的“飞天”与“脱节” */
+.bubble-1::before { height: 26dvh; } /* 精修：大幅缩短至 26dvh，精准扎入软垫左垂耳底部，绝不飞天出界 */
+.bubble-2::before { height: 55dvh; } /* 中间左：直入软垫腹部中心 */
+.bubble-3::before { height: 70dvh; } /* 中间右：直入软垫腹部中心 */
+.bubble-4::before { height: 47dvh; } /* 精修：拉长至 47dvh，配合垫子下沉完成无缝闭环，解决右侧断裂 */
+
+/* ==========================================
+   7. 纯净内部图标
+   ========================================== */
+.bubble-icon {
+  position: relative;
+  z-index: 3; /* 处于三明治结构最顶层 */
+  width: 65%; /* 四周留足舒适透明泡泡边 */
+  height: 65%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* ==========================================
+   8. 错落悬挂排版 (精修：左 1 气泡舒适深挂)
+   ========================================== */
+.bubble-1 {
+  align-self: flex-start;
+  margin-top: 19%; /* 从 14% 进一步下调至 19%，形成更自然的错落落差 */
+}
+
+.bubble-2 {
+  align-self: center;
+  transform: translateY(-18%);
+}
+
+.bubble-3 {
+  align-self: flex-end;
+  margin-bottom: 8%;
+}
+
+.bubble-4 {
+  align-self: center;
+  transform: translateY(15%);
+}
