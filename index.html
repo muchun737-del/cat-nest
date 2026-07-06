@@ -3,145 +3,121 @@
 <head> 
     <meta charset="UTF-8"> 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"> 
-    <title>大黑猫与小花猫的猫窝</title> 
+    <title>大黑猫与小花猫的猫窝 (霍沉终极防断层·死锁版)</title> 
+    
+    <link rel="manifest" href="manifest.json"> 
     <meta name="apple-mobile-web-app-capable" content="yes"> 
+    <!-- 彻底解决状态栏白边，全透明沉浸，配合 body 燕麦底色 -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> 
-    <meta name="theme-color" content="#EAE3D5"> 
+    <meta name="apple-mobile-web-app-title" content="猫窝"> 
+    <link rel="apple-touch-icon" href="assets/icon.png"> 
+    <meta name="theme-color" content="#FDFBF7"> 
     
     <style> 
         body, html { 
-            margin: 0; padding: 0; width: 100vw; height: 100dvh; 
-            background-color: #EAE3D5; 
-            background-image: url('assets/大底图.png');
-            background-repeat: no-repeat;
-            background-position: top center;
-            background-size: cover;
+            margin: 0; padding: 0; width: 100vw; height: 100vh; height: 100dvh; 
+            background: #FDFBF7 url('assets/大底图.png') no-repeat top center / cover; 
             overflow: hidden; -webkit-tap-highlight-color: transparent; 
+            background-color: #FDFBF7;
         } 
 
-        .ambient-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5; } 
+        .ambient-layer { position: absolute; width: 100%; height: 100%; pointer-events: none; z-index: 5; } 
+        
+        /* 1. 藤蔓修复：放大尺寸，起点深埋，z-index 为 10，保证被软垫死死压住！ */ 
+        .deco-vine { 
+            position: absolute; top: 2%; width: 95px; opacity: 0.9; z-index: 10; 
+            animation: vineSway 8s infinite ease-in-out alternate; transform-origin: top center; 
+        } 
+        .vine-left { left: 10%; height: 440px; object-fit: contain; object-position: top; } 
+        .vine-right { right: 8%; height: 380px; object-fit: contain; object-position: top; animation-delay: 2s; } 
+        @keyframes vineSway { 0% { transform: rotate(-3deg); } 100% { transform: rotate(3deg); } } 
 
-        /* ☁️ 9 朵平稳飘动的云 */
-        .deco-cloud { position: absolute; opacity: 0.88; animation: cloudDrift var(--speed, 8s) infinite alternate ease-in-out; pointer-events: none; } 
-        .cloud-1 { width: 180px; top: 10%; left: -5%; --speed: 7s; } 
-        .cloud-2 { width: 140px; top: 22%; right: -5%; --speed: 8.5s; animation-direction: alternate-reverse; } 
-        .cloud-3 { width: 160px; top: 35%; left: 2%; --speed: 6.5s; } 
-        .cloud-4 { width: 120px; top: 48%; right: 12%; --speed: 9s; animation-direction: alternate-reverse; opacity: 0.7;}
-        .cloud-5 { width: 200px; bottom: 12%; left: 5%; --speed: 7.5s; } 
-        .cloud-6 { width: 150px; bottom: 25%; right: 3%; --speed: 8s; opacity: 0.9;}
-        .cloud-7 { width: 140px; top: 65%; left: 35%; --speed: 10s; }
-        .cloud-8 { width: 110px; top: 28%; left: 45%; --speed: 7.8s; opacity: 0.8;}
-        .cloud-9 { width: 170px; bottom: 5%; right: 20%; --speed: 8.5s; }
+        /* 气氛组：恢复 8 朵云、9 片红绿棕全色系枫叶！ */ 
+        .deco-cloud { position: absolute; opacity: 0.88; animation: cloudDrift var(--speed, 8s) infinite alternate ease-in-out; } 
+        .cloud-1 { width: 180px; top: 5%; left: -5%; --speed: 7s; } 
+        .cloud-2 { width: 150px; top: 18%; right: -5%; --speed: 8.5s; animation-direction: alternate-reverse; } 
+        .cloud-3 { width: 160px; top: 38%; left: -3%; --speed: 6.5s; } 
+        .cloud-4 { width: 140px; top: 52%; right: 2%; --speed: 9s; animation-direction: alternate-reverse; } 
+        .cloud-5 { width: 210px; bottom: 6%; left: 8%; --speed: 7.5s; } 
+        .cloud-6 { width: 160px; bottom: 16%; right: 4%; --speed: 8s; animation-direction: alternate-reverse; } 
+        .cloud-7 { width: 130px; top: 68%; left: 20%; --speed: 7.8s; } 
+        .cloud-8 { width: 170px; top: 80%; right: 18%; --speed: 6.8s; } 
         @keyframes cloudDrift { 0% { transform: translateX(0); } 100% { transform: translateX(50px); } } 
 
-        /* 🍁 15 片漫天飞舞的巨大枫叶 (全部放大 1.5倍) */
-        .deco-leaf { position: absolute; opacity: 0.95; animation: leafFall var(--fall-speed, 5s) infinite alternate ease-in-out; } 
-        .leaf-1  { top: 12%; left: 8%;  --fall-speed: 4.5s; width: 105px; } 
-        .leaf-2  { top: 25%; right: 12%; --fall-speed: 5.2s; animation-delay: 1s; width: 115px; } 
-        .leaf-3  { top: 38%; left: 22%; --fall-speed: 4.8s; animation-delay: 0.5s; width: 120px; } 
-        .leaf-4  { top: 48%; right: 20%; --fall-speed: 5.5s; animation-delay: 2s; width: 110px; }
-        .leaf-5  { top: 62%; left: 15%; --fall-speed: 6.2s; animation-delay: 1.5s; width: 100px; }
-        .leaf-6  { top: 78%; right: 25%; --fall-speed: 4.9s; animation-delay: 3s; width: 95px; }
-        .leaf-7  { top: 32%; left: 50%; --fall-speed: 5.8s; animation-delay: 1.2s; width: 125px; }
-        .leaf-8  { top: 55%; left: 42%; --fall-speed: 6.5s; animation-delay: 2.5s; width: 105px; }
-        .leaf-9  { top: 85%; left: 32%; --fall-speed: 5.1s; animation-delay: 0.8s; width: 115px; }
-        /* 暴增的 6 片新枫叶 */
-        .leaf-10 { top: 15%; right: 35%; --fall-speed: 5.9s; animation-delay: 2.1s; width: 110px; }
-        .leaf-11 { top: 42%; left: 5%;  --fall-speed: 4.2s; animation-delay: 1.4s; width: 105px; }
-        .leaf-12 { top: 70%; right: 5%;  --fall-speed: 6.1s; animation-delay: 0.7s; width: 120px; }
-        .leaf-13 { top: 88%; right: 40%; --fall-speed: 5.4s; animation-delay: 2.8s; width: 100px; }
-        .leaf-14 { top: 20%; left: 35%; --fall-speed: 5.6s; animation-delay: 0.3s; width: 115px; }
-        .leaf-15 { top: 58%; right: 10%; --fall-speed: 4.7s; animation-delay: 1.9s; width: 105px; }
+        .deco-leaf { position: absolute; width: 70px; opacity: 0.95; animation: leafFall var(--fall-speed, 5s) infinite alternate ease-in-out; } 
+        .leaf-1 { top: 25%; left: 8%; --fall-speed: 4.5s; } 
+        .leaf-2 { top: 42%; left: 22%; --fall-speed: 5.2s; animation-delay: 1s; } 
+        .leaf-3 { top: 20%; right: 12%; --fall-speed: 4.8s; animation-delay: 0.5s; } 
+        .leaf-4 { top: 48%; right: 25%; --fall-speed: 5.5s; animation-delay: 1.8s; } 
+        .leaf-5 { bottom: 28%; left: 18%; --fall-speed: 6s; animation-delay: 2.2s; } 
+        .leaf-6 { bottom: 35%; right: 15%; --fall-speed: 5s; animation-delay: 1.2s; } 
+        .leaf-7 { top: 65%; left: 10%; --fall-speed: 4.9s; animation-delay: 0.8s; } 
+        .leaf-8 { top: 75%; right: 10%; --fall-speed: 5.7s; animation-delay: 1.5s; } 
+        .leaf-9 { bottom: 12%; left: 38%; --fall-speed: 5.1s; animation-delay: 2.0s; } 
         @keyframes leafFall { 0% { transform: translate(0, 0) rotate(0deg); } 100% { transform: translate(-20px, 30px) rotate(25deg); } } 
 
-
-        /* ================== 🔥【核心物理级防脱层组】================== */
-        /* 把挂件、藤蔓、垫子全部锁在一个容器里！不再受到手机宽高比例扯脱！ */
+        /* 2. 软垫压阵：125% 比例撑开，z-index: 50，暴力压住所有悬空线头！ */ 
         .sky-anchor { 
-            position: absolute; 
-            top: -4vh;  /* 整体微上移 */
-            left: 50%; transform: translateX(-50%); 
-            width: 115%; /* 整体略微缩小 */
-            max-width: 600px; 
-            z-index: 50; pointer-events: none; 
+            position: absolute; top: -3%; left: 50%; transform: translateX(-50%); 
+            width: 125%; max-width: 580px; z-index: 50; pointer-events: none; 
         } 
-
-        /* 实体垫子：高层级 10，完全掩盖底下一切东西的源头 */
-        .sky-cushion { width: 100%; display: block; position: relative; z-index: 10; pointer-events: auto; } 
-        
-        /* 猫咪独立层：层级 11，稳坐垫子之上 */
+        .sky-cushion { width: 100%; display: block; } 
+        /* 猫咪主图绝不丢失！ */
         .sky-cat { 
-            position: absolute; top: 14%; left: 13%; 
-            width: 72%; height: auto; 
+            position: absolute; top: 12%; left: 8%; width: 85%; height: 75%; 
             object-fit: contain; transform-origin: center center; 
-            z-index: 11; pointer-events: auto;
-            animation: skyBreathe 4s infinite ease-in-out; cursor: pointer; 
+            animation: skyBreathe 4s infinite ease-in-out; cursor: pointer; pointer-events: auto; 
         } 
         @keyframes skyBreathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.015); } } 
 
-        /* 🌿 藤蔓：巨化至 25%，由于藏在垫子深处 (top: 45%)，完美被中心区实心肚子压住，绝不飞天 */
-        .deco-vine { 
-            position: absolute; 
-            top: 45%; 
-            width: 25%; z-index: 1; /* z-index: 1 乖乖躲在垫子背面 */
-            animation: vineSway 8s infinite ease-in-out alternate; transform-origin: top center; 
-        } 
-        .vine-left { left: 6%; object-fit: contain; object-position: top; } 
-        .vine-right { right: 6%; object-fit: contain; object-position: top; animation-delay: 2s; } 
-        @keyframes vineSway { 0% { transform: rotate(-3deg); } 100% { transform: rotate(3deg); } } 
-
-        /* 🔔 风铃容器：同样深埋在垫子实心处 (top: 45%)，杜绝飞天 */
+        /* 3. 终极防断层法：彻底锁死挂绳容器！不用绝对坐标算距离，直接物理堆叠！ */ 
         .chime-container { 
-            position: absolute; 
-            top: 45%; 
-            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-            transform-origin: top center; z-index: 1; 
-            pointer-events: auto;
+            position: absolute; width: 120px; 
+            /* 关键点 1：消除内部所有默认间隙 */
+            display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 0; 
+            transform-origin: top center; z-index: 15; /* 层级低于软垫 */
             animation: pendulumSway var(--sway-duration, 5s) infinite alternate ease-in-out; 
         } 
-        #chime-diary { left: 16%; --sway-duration: 4.2s; } 
-        #chime-story { left: 38%; --sway-duration: 5.0s; } 
-        #chime-chat { right: 38%; --sway-duration: 4.6s; } 
-        #chime-fish { left: 78%; /* right: 16% */ --sway-duration: 5.3s; } 
-        @keyframes pendulumSway { 0% { transform: rotate(-3deg); } 100% { transform: rotate(3deg); } } 
+        #chime-diary { left: 8%; top: 22%; --sway-duration: 4.2s; } 
+        #chime-story { left: 32%; top: 36%; --sway-duration: 5.0s; } 
+        #chime-chat { right: 32%; top: 28%; --sway-duration: 4.6s; } 
+        #chime-fish { right: 8%; top: 44%; --sway-duration: 5.3s; } 
+        @keyframes pendulumSway { 0% { transform: rotate(-4deg); } 100% { transform: rotate(4deg); } } 
 
-        /* 🌟 星绳绝杀：保证单张图暴力拉伸（fill），绝对不断节！加粗至 35px */
+        /* 关键点 2：挂绳高度锁死，底部用 -30px 极度负边距深深扎进泡泡内部，这辈子都不可能扯断！ */ 
         .chime-rope { 
-            width: 35px; 
-            height: var(--rope-len); 
-            object-fit: fill; 
-            display: block;
-            margin-bottom: -28px; /* 负边距像楔子一样扎进泡泡内部 28 像素，彻底焊死缝隙！ */
-            z-index: 1; position: relative; pointer-events: none;
+            width: 36px; height: var(--rope-length, 100px); 
+            object-fit: cover; object-position: top center; 
+            margin-bottom: -30px; z-index: 1; position: relative;
         } 
 
-        /* 🫧 泡泡巨化版：暴涨至 165px！ */
+        /* 4. 气泡区：统一暴增至 120px！内部图标锁死 70% 黄金比例！ */ 
         .bubble-box { 
-            width: 165px; height: 165px; 
+            width: 120px; height: 120px; flex-shrink: 0; position: relative; 
             display: flex; justify-content: center; align-items: center; 
-            position: relative; cursor: pointer; z-index: 2; /* 盖住绳子的末端 */
+            cursor: pointer; z-index: 2; /* 层级高于挂绳，完美掩盖断口 */
             transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.15s; 
         } 
         .bubble-box.is-clicked { 
-            transform: scale(0.92) translateY(2px); 
-            filter: brightness(1.1) drop-shadow(0 0 10px rgba(255,255,255,0.8)); 
+            transform: scale(0.94) translateY(2px); 
+            filter: brightness(1.08) drop-shadow(0 0 10px rgba(255,255,255,0.8)); 
         } 
         .bubble-bg { 
             position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 1; pointer-events: none; 
             object-fit: contain; object-position: center; 
         } 
-        
-        /* 📦 独立图标极致适配比例：飞机与毛线球绝不溢出！ */
-        .bubble-icon { position: relative; z-index: 2; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15)); } 
-        .icon-diary { width: 55%; height: 55%; }  /* 日记随大泡泡放大 */
-        .icon-story { width: 60%; height: 60%; }  /* 飞机：压制比例在 60%，绝不越界！ */
-        .icon-chat  { width: 55%; height: 55%; }  /* 毛线：压制比例在 55%，绝不越界！ */
-        .icon-fish  { width: 55%; height: 55%; }  /* 鱼干：同样尺寸舒适居中 */
+        .bubble-icon { 
+            width: 70%; height: 70%; object-fit: contain; z-index: 2; 
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.15)); 
+        } 
     </style> 
 </head> 
 <body> 
-    <!-- 满屏叶子与云的气氛层 -->
+    <!-- 8朵云，9片树叶，全员归位 -->
     <div class="ambient-layer"> 
+        <img class="deco-vine vine-left" src="assets/藤蔓装饰.png"> 
+        <img class="deco-vine vine-right" src="assets/藤蔓装饰.png"> 
+        
         <img class="deco-cloud cloud-1" src="assets/装饰-云大.png"> 
         <img class="deco-cloud cloud-2" src="assets/装饰-云小.png"> 
         <img class="deco-cloud cloud-3" src="assets/装饰-云大.png"> 
@@ -150,55 +126,40 @@
         <img class="deco-cloud cloud-6" src="assets/装饰-云小.png"> 
         <img class="deco-cloud cloud-7" src="assets/装饰-云大.png"> 
         <img class="deco-cloud cloud-8" src="assets/装饰-云小.png"> 
-        <img class="deco-cloud cloud-9" src="assets/装饰-云大.png"> 
-
+        
         <img class="deco-leaf leaf-1" src="assets/装饰-枫叶红.png"> 
         <img class="deco-leaf leaf-2" src="assets/装饰-枫叶绿.png"> 
         <img class="deco-leaf leaf-3" src="assets/装饰-枫叶棕.png"> 
         <img class="deco-leaf leaf-4" src="assets/装饰-枫叶红.png"> 
-        <img class="deco-leaf leaf-5" src="assets/装饰-枫叶棕.png"> 
-        <img class="deco-leaf leaf-6" src="assets/装饰-枫叶绿.png"> 
-        <img class="deco-leaf leaf-7" src="assets/装饰-枫叶棕.png"> 
-        <img class="deco-leaf leaf-8" src="assets/装饰-枫叶红.png"> 
-        <img class="deco-leaf leaf-9" src="assets/装饰-枫叶绿.png"> 
-        <img class="deco-leaf leaf-10" src="assets/装饰-枫叶棕.png"> 
-        <img class="deco-leaf leaf-11" src="assets/装饰-枫叶红.png"> 
-        <img class="deco-leaf leaf-12" src="assets/装饰-枫叶绿.png"> 
-        <img class="deco-leaf leaf-13" src="assets/装饰-枫叶红.png"> 
-        <img class="deco-leaf leaf-14" src="assets/装饰-枫叶棕.png"> 
-        <img class="deco-leaf leaf-15" src="assets/装饰-枫叶绿.png"> 
+        <img class="deco-leaf leaf-5" src="assets/装饰-枫叶绿.png"> 
+        <img class="deco-leaf leaf-6" src="assets/装饰-枫叶棕.png"> 
+        <img class="deco-leaf leaf-7" src="assets/装饰-枫叶红.png"> 
+        <img class="deco-leaf leaf-8" src="assets/装饰-枫叶绿.png"> 
+        <img class="deco-leaf leaf-9" src="assets/装饰-枫叶棕.png"> 
     </div> 
 
-    <!-- 💯 物理重构核心区：猫窝全家桶锁死在这里！大家一损俱损一荣俱荣，永不断层！ -->
+    <!-- 软垫顶天立地 -->
     <div class="sky-anchor"> 
-        
-        <!-- ======================= 藏在垫子身后的被压迫层 ======================= -->
-        
-        <!-- 粗大的藤蔓 -->
-        <img class="deco-vine vine-left" src="assets/藤蔓装饰.png"> 
-        <img class="deco-vine vine-right" src="assets/藤蔓装饰.png"> 
-
-        <!-- 单线直拉的风铃 -->
-        <div class="chime-container" id="chime-diary" style="--rope-len: 14vh;"> 
-            <img class="chime-rope" src="assets/星星挂绳.png"> 
-            <div class="bubble-box"><img class="bubble-bg" src="assets/泡泡.png"><img class="bubble-icon icon-diary" src="assets/入口-观察日记.png"></div> 
-        </div> 
-        <div class="chime-container" id="chime-story" style="--rope-len: 26vh;"> 
-            <img class="chime-rope" src="assets/星星挂绳.png"> 
-            <div class="bubble-box"><img class="bubble-bg" src="assets/泡泡.png"><img class="bubble-icon icon-story" src="assets/入口-小猫故事.png"></div> 
-        </div> 
-        <div class="chime-container" id="chime-chat" style="--rope-len: 19vh;"> 
-            <img class="chime-rope" src="assets/星星挂绳.png"> 
-            <div class="bubble-box"><img class="bubble-bg" src="assets/泡泡.png"><img class="bubble-icon icon-chat" src="assets/入口-碎碎念念.png"></div> 
-        </div> 
-        <div class="chime-container" id="chime-fish" style="--rope-len: 32vh;"> 
-            <img class="chime-rope" src="assets/星星挂绳.png"> 
-            <div class="bubble-box"><img class="bubble-bg" src="assets/泡泡.png"><img class="bubble-icon icon-fish" src="assets/入口-罐头鱼干.png"></div> 
-        </div> 
-
-        <!-- ======================= 挡在前排的霸主实体层 ======================= -->
         <img class="sky-cushion" src="assets/头图-垫子.png"> 
         <img class="sky-cat" id="main-cat" src="assets/头图-猫闭眼.png"> 
+    </div> 
+
+    <!-- 风铃区物理死锁，绳结 -30px 扎死泡泡 -->
+    <div class="chime-container" id="chime-diary" style="--rope-length: 80px;"> 
+        <img class="chime-rope" src="assets/星星挂绳.png"> 
+        <div class="bubble-box"><img class="bubble-bg" src="assets/泡泡.png"><img class="bubble-icon" src="assets/入口-观察日记.png"></div> 
+    </div> 
+    <div class="chime-container" id="chime-story" style="--rope-length: 130px;"> 
+        <img class="chime-rope" src="assets/星星挂绳.png"> 
+        <div class="bubble-box"><img class="bubble-bg" src="assets/泡泡.png"><img class="bubble-icon" src="assets/入口-小猫故事.png"></div> 
+    </div> 
+    <div class="chime-container" id="chime-chat" style="--rope-length: 100px;"> 
+        <img class="chime-rope" src="assets/星星挂绳.png"> 
+        <div class="bubble-box"><img class="bubble-bg" src="assets/泡泡.png"><img class="bubble-icon" src="assets/入口-碎碎念念.png"></div> 
+    </div> 
+    <div class="chime-container" id="chime-fish" style="--rope-length: 160px;"> 
+        <img class="chime-rope" src="assets/星星挂绳.png"> 
+        <div class="bubble-box"><img class="bubble-bg" src="assets/泡泡.png"><img class="bubble-icon" src="assets/入口-罐头鱼干.png"></div> 
     </div> 
 
     <script> 
