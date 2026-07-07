@@ -26,6 +26,7 @@ html, body {
   box-sizing: border-box;
   padding-bottom: env(safe-area-inset-bottom); /* 苹果底部虚拟条安全区保护 */
 }
+
 /* ==========================================
    3. 顶部软垫容器 (z-index: 50 物理压顶)
    ========================================== */
@@ -39,7 +40,6 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* 确保此处无 translateY 干扰，彻底解耦容器内部元素 */
 }
 
 .sky-cushion {
@@ -63,12 +63,43 @@ html, body {
 }
 
 /* ==========================================
+   4. 风铃气泡舞台 (视觉协同上提，z-index: 10)
+   ========================================== */
+.chimes-stage {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  margin-top: -3dvh; /* 向上收紧与垫子的距离 */
+  padding: 0 0 4dvh 0;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 10;
+}
+
+/* ==========================================
+   5. 风铃气泡核心 (纯净流体大小)
+   ========================================== */
+.chime-bubble {
+  width: clamp(80px, 22vw, 140px);
+  aspect-ratio: 1 / 1;
+  flex-shrink: 1;
+  background: url('https://cat-nest-sandy.vercel.app/assets/泡泡.png') no-repeat center center / contain;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* ==========================================
    6. 终极挂绳架构：垂直平铺 + 向心差分高度
    ========================================== */
 .chime-bubble::before {
   content: "";
   position: absolute;
-  bottom: 50%; /* 直扎泡泡靶心，绝对无断层 */
+  bottom: 50%; /* 纯净素材专用：直扎泡泡靶心，绝对无断层 */
   left: 50%;
   transform: translateX(-50%);
   width: 52px; /* 强制加宽至 52px，高分屏下颗粒饱满清晰 */
@@ -78,11 +109,21 @@ html, body {
   pointer-events: none;
 }
 
-/* 核心纠偏：向心差分高度（完美适配垫子下沉 2% 后的物理遮挡边界） */
+/* 核心纠偏：向心差分高度（精准匹配垫子下沉 2% 后的物理遮挡边界） */
 .bubble-1::before { height: 27dvh; } /* 最左侧：微调至 27dvh，刚好被下沉的左垂耳稳稳压住 */
 .bubble-2::before { height: 52dvh; } /* 中间左：由 55dvh 回撤至 52dvh，防止下沉后绳头穿透腹部顶端 */
-.bubble-3::before { height: 68dvh; } /* 中间右：由 70dvh 回撤至 68dvh，直入软垫腹部中心层 */
+.bubble-3::before { height: 68dvh; } /* 中间右：由 70dvh 回撤至 68dvh，直入软垫厚实的腹部中心 */
 .bubble-4::before { height: 35dvh; } /* 最右侧：由 42dvh 大幅缩减至 35dvh，配合气泡上提至 -5%，精准藏入右垂耳后方 */
+
+/* ==========================================
+   7. 纯净内部图标 (自适应同权，绝不溢出)
+   ========================================== */
+.bubble-icon {
+  width: 65%; /* 纯净素材统一 65%，四周留足舒适透明泡泡边 */
+  height: 65%;
+  object-fit: contain;
+  pointer-events: none;
+}
 
 /* ==========================================
    8. 错落悬挂排版 (继承原版无绝对坐标排版)
@@ -104,5 +145,5 @@ html, body {
 
 .bubble-4 {
   align-self: center;
-  transform: translateY(-5%); /* 按照要求维持 -5% 的上提，替换原本的 15% */
+  transform: translateY(-5%); /* 核心修改：维持 -5% 的上提，替换原本的 15% */
 }
