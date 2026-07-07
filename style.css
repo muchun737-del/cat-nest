@@ -1,5 +1,5 @@
 /* ==========================================
-   1. 底层配置与防回弹泛白死锁
+   1. 底层配置与防回弹泛白死锁 (V9 终极融合)
    ========================================== */
 html, body {
   margin: 0;
@@ -7,14 +7,14 @@ html, body {
   width: 100%;
   height: 100%;
   min-height: -webkit-fill-available; /* 绑定 WebKit 物理全屏 */
-  background: #FDFBF7 url('https://cat-nest-sandy.vercel.app/assets/大底图.png') no-repeat top center / cover;
-  background-color: #FDFBF7 !important; /* 加固背景底色死锁，防底部安全区留白 */
+  background: url('https://cat-nest-sandy.vercel.app/assets/大底图.png') no-repeat center center / cover !important;
+  background-color: #EFECE6 !important; /* 核心修改：回退底色更正为暗暖卡其灰，与水彩质感0对比度融合 */
   overscroll-behavior-y: none; /* 强行拦截 iOS/Android 下拉回弹泛白 */
   -webkit-tap-highlight-color: transparent;
 }
 
 /* ==========================================
-   2. 主容器架构 (现代视口 + 底部安全区 + V8纹理通铺吞噬)
+   2. 主容器架构 (现代视口 + 底部安全区 + V9全透明穿透)
    ========================================== */
 .cat-nest-container {
   width: 100%;
@@ -22,7 +22,7 @@ html, body {
   min-height: 100vh; /* 传统视口回退保护 */
   min-height: -webkit-fill-available; /* 强制主容器向下蔓延至物理边缘 */
   max-height: 100dvh;
-  background: #FDFBF7 url('https://cat-nest-sandy.vercel.app/assets/大底图.png') no-repeat top center / cover !important; /* 核心修改：主容器直接穿上水彩纹理底图，吞噬白条且100%保留质感 */
+  background: transparent !important; /* 核心杀招：主容器全透明！底层水彩纹理无缝透到物理最边缘 */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -78,94 +78,4 @@ html, body {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  margin-top: -3dvh; /* 向上收紧与垫子的距离 */
-  padding: 0 0 4dvh 0;
-  box-sizing: border-box;
-  position: relative;
-  z-index: 10;
-}
-
-/* ==========================================
-   5. 风铃气泡核心 (建立正向层级基准)
-   ========================================== */
-.chime-bubble {
-  width: clamp(80px, 22vw, 140px);
-  aspect-ratio: 1 / 1;
-  flex-shrink: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  z-index: 1;
-}
-
-/* ==========================================
-   6. 终极挂绳架构 (三明治中间层：z-index: 2)
-   ========================================== */
-.chime-bubble::before {
-  content: "";
-  position: absolute;
-  bottom: 50%; /* 直扎泡泡靶心，绝对无断层 */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 52px; /* 强制加宽至 52px，高分屏下颗粒饱满清晰 */
-  background: url('https://cat-nest-sandy.vercel.app/assets/星星挂绳.png') repeat-y bottom center / 100% auto;
-  z-index: 2; /* 设置中间层，压在泡泡背景上方 */
-  pointer-events: none;
-}
-
-/* ==========================================
-   6.5 泡泡透明底图 (三明治最底层：z-index: 1)
-   ========================================== */
-.chime-bubble::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('https://cat-nest-sandy.vercel.app/assets/泡泡.png') no-repeat center center / contain;
-  z-index: 1; /* 设置最底层 */
-  pointer-events: none;
-}
-
-/* 核心纠偏：向心差分高度 (V7 终极视觉平衡) */
-.bubble-1::before { height: 22dvh; }
-.bubble-2::before { height: 52dvh; }
-.bubble-3::before { height: 31dvh; }
-.bubble-4::before { height: 35dvh; }
-
-/* ==========================================
-   7. 纯净内部图标 (三明治最高层：z-index: 3)
-   ========================================== */
-.bubble-icon {
-  width: 65%;
-  height: 65%;
-  object-fit: contain;
-  pointer-events: none;
-  position: relative;
-  z-index: 3; /* 设置最高层，完全悬浮于挂绳与泡泡之上 */
-}
-
-/* ==========================================
-   8. 错落悬挂排版 (向心拉升排版)
-   ========================================== */
-.bubble-1 {
-  align-self: flex-start;
-  margin-top: 5%;
-}
-
-.bubble-2 {
-  align-self: center;
-  transform: translateY(-18%);
-}
-
-.bubble-3 {
-  align-self: flex-start;
-  margin-top: 14%;
-}
-
-.bubble-4 {
-  align-self: center;
-  transform: translateY(-5%);
-}
+  margin-top: -3dvh; /* 向上收紧与垫子的
