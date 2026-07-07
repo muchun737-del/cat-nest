@@ -14,15 +14,15 @@ html, body {
 }
 
 /* ==========================================
-   2. 主容器架构 (现代视口 + 底部安全区 + V7底色吞噬)
+   2. 主容器架构 (现代视口 + 底部安全区 + V8纹理通铺吞噬)
    ========================================== */
 .cat-nest-container {
   width: 100%;
   height: 100dvh; /* 现代动态视口，防底部地址栏吞噬 */
-  min-height: 100vh; /* 核心修改：传统视口回退保护 */
-  min-height: -webkit-fill-available; /* 核心修改：强制主容器向下蔓延至物理边缘 */
+  min-height: 100vh; /* 传统视口回退保护 */
+  min-height: -webkit-fill-available; /* 强制主容器向下蔓延至物理边缘 */
   max-height: 100dvh;
-  background-color: #FDFBF7 !important; /* 核心修改：主容器接管底色，彻底吞噬底部安全区白条 */
+  background: #FDFBF7 url('https://cat-nest-sandy.vercel.app/assets/大底图.png') no-repeat top center / cover !important; /* 核心修改：主容器直接穿上水彩纹理底图，吞噬白条且100%保留质感 */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -130,7 +130,7 @@ html, body {
 }
 
 /* 核心纠偏：向心差分高度 (V7 终极视觉平衡) */
-.bubble-1::before { height: 22dvh; } /* 核心修改：大幅缩减至 22dvh，确保 PWA 全屏下完美藏入软垫左垂耳后方 */
+.bubble-1::before { height: 22dvh; }
 .bubble-2::before { height: 52dvh; }
 .bubble-3::before { height: 31dvh; }
 .bubble-4::before { height: 35dvh; }
