@@ -50,7 +50,7 @@ html, body {
   height: 100%;
   object-fit: contain; /* 完整保留椭圆垂耳造型，无裁切 */
   pointer-events: none;
-  transform: translateY(2%); /* 核心修改：单独下沉垫子，不动猫 */
+  transform: translateY(10%); /* 核心修改：大幅下沉垫子至 10%，消除高悬空隙 */
 }
 
 .sky-cat {
@@ -60,6 +60,7 @@ html, body {
   object-fit: contain;
   z-index: 51;
   pointer-events: none;
+  transform: scale(0.82) translateY(6%); /* 核心修改：缩减巨猫比例至 82% 并微下沉，稳稳趴在窝里 */
 }
 
 /* ==========================================
@@ -109,10 +110,10 @@ html, body {
   pointer-events: none;
 }
 
-/* 核心纠偏：向心差分高度（精准匹配垫子下沉 2% 后的物理遮挡边界） */
+/* 核心纠偏：向心差分高度（精准匹配垫子下沉后的物理遮挡边界） */
 .bubble-1::before { height: 27dvh; } /* 最左侧：微调至 27dvh，刚好被下沉的左垂耳稳稳压住 */
 .bubble-2::before { height: 52dvh; } /* 中间左：由 55dvh 回撤至 52dvh，防止下沉后绳头穿透腹部顶端 */
-.bubble-3::before { height: 68dvh; } /* 中间右：由 70dvh 回撤至 68dvh，直入软垫厚实的腹部中心 */
+.bubble-3::before { height: 31dvh; } /* 中间右：核心修改，缩减至 31dvh，介于日记与罐头之间形成渐变律动 */
 .bubble-4::before { height: 35dvh; } /* 最右侧：由 42dvh 大幅缩减至 35dvh，配合气泡上提至 -5%，精准藏入右垂耳后方 */
 
 /* ==========================================
@@ -139,8 +140,8 @@ html, body {
 }
 
 .bubble-3 {
-  align-self: flex-end;
-  margin-bottom: 8%;
+  align-self: flex-start; /* 核心修改：彻底废除 flex-end，改为顶部对齐 */
+  margin-top: 14%; /* 核心修改：物理上提气泡，让 31dvh 短绳顶端无缝刺入垫子下沉后的腹部中心 */
 }
 
 .bubble-4 {
