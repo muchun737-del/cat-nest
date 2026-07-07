@@ -50,7 +50,7 @@ html, body {
   height: 100%;
   object-fit: contain; /* 完整保留椭圆垂耳造型，无裁切 */
   pointer-events: none;
-  transform: translateY(10%); /* 核心修改：大幅下沉垫子至 10%，消除高悬空隙 */
+  transform: translateY(10%); /* 大幅下沉垫子至 10%，消除高悬空隙 */
 }
 
 .sky-cat {
@@ -60,7 +60,7 @@ html, body {
   object-fit: contain;
   z-index: 51;
   pointer-events: none;
-  transform: scale(0.82) translateY(6%); /* 核心修改：缩减巨猫比例至 82% 并微下沉，稳稳趴在窝里 */
+  transform: scale(0.82) translateY(0%); /* 核心修改：保持 82% 优雅体型，微移回正(0%) */
 }
 
 /* ==========================================
@@ -81,53 +81,70 @@ html, body {
 }
 
 /* ==========================================
-   5. 风铃气泡核心 (纯净流体大小)
+   5. 风铃气泡核心 (建立正向层级基准，废除 isolation)
    ========================================== */
 .chime-bubble {
   width: clamp(80px, 22vw, 140px);
   aspect-ratio: 1 / 1;
   flex-shrink: 1;
-  background: url('https://cat-nest-sandy.vercel.app/assets/泡泡.png') no-repeat center center / contain;
+  /* 核心重构：移除原背景图与 isolation: isolate，纯净作为容器基准 */
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  z-index: 1;
 }
 
 /* ==========================================
-   6. 终极挂绳架构：垂直平铺 + 向心差分高度
+   6. 终极挂绳架构 (三明治底层：z-index: 1)
    ========================================== */
 .chime-bubble::before {
   content: "";
   position: absolute;
-  bottom: 50%; /* 纯净素材专用：直扎泡泡靶心，绝对无断层 */
+  bottom: 50%; /* 直扎泡泡靶心，绝对无断层 */
   left: 50%;
   transform: translateX(-50%);
   width: 52px; /* 强制加宽至 52px，高分屏下颗粒饱满清晰 */
-  /* 核心杀招：废除 contain，用 repeat-y 垂直平铺无限循环 */
   background: url('https://cat-nest-sandy.vercel.app/assets/星星挂绳.png') repeat-y bottom center / 100% auto;
-  z-index: -1; /* 隐入圆泡泡正背层，绝不盖住气泡 */
+  z-index: 1; /* 核心修改：废除 -1，改用正数层级作为最底层 */
+  pointer-events: none;
+}
+
+/* ==========================================
+   6.5 泡泡透明底图 (三明治中层：z-index: 2)
+   ========================================== */
+.chime-bubble::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url('https://cat-nest-sandy.vercel.app/assets/泡泡.png') no-repeat center center / contain;
+  z-index: 2; /* 核心修改：独立作为中层，稳稳盖住底层的挂绳 */
   pointer-events: none;
 }
 
 /* 核心纠偏：向心差分高度（精准匹配垫子下沉后的物理遮挡边界） */
-.bubble-1::before { height: 27dvh; } /* 最左侧：微调至 27dvh，刚好被下沉的左垂耳稳稳压住 */
-.bubble-2::before { height: 52dvh; } /* 中间左：由 55dvh 回撤至 52dvh，防止下沉后绳头穿透腹部顶端 */
-.bubble-3::before { height: 31dvh; } /* 中间右：核心修改，缩减至 31dvh，介于日记与罐头之间形成渐变律动 */
-.bubble-4::before { height: 35dvh; } /* 最右侧：由 42dvh 大幅缩减至 35dvh，配合气泡上提至 -5%，精准藏入右垂耳后方 */
+.bubble-1::before { height: 27dvh; } /* 最左侧：刚好被下沉的左垂耳稳稳压住 */
+.bubble-2::before { height: 52dvh; } /* 中间左：防止下沉后绳头穿透腹部顶端 */
+.bubble-3::before { height: 31dvh; } /* 中间右：黄金比例，介于日记与罐头之间形成律动 */
+.bubble-4::before { height: 35dvh; } /* 最右侧：配合气泡上提至 -5%，精准藏入右垂耳后方 */
 
 /* ==========================================
-   7. 纯净内部图标 (自适应同权，绝不溢出)
+   7. 纯净内部图标 (三明治顶层：z-index: 3)
    ========================================== */
 .bubble-icon {
   width: 65%; /* 纯净素材统一 65%，四周留足舒适透明泡泡边 */
   height: 65%;
   object-fit: contain;
   pointer-events: none;
+  position: relative;
+  z-index: 3; /* 核心修改：显式声明最高层级，绝不被挂绳或泡泡遮挡 */
 }
 
 /* ==========================================
-   8. 错落悬挂排版 (继承原版无绝对坐标排版)
+   8. 错落悬挂排版 (向心拉升排版)
    ========================================== */
 .bubble-1 {
   align-self: flex-start;
@@ -140,11 +157,11 @@ html, body {
 }
 
 .bubble-3 {
-  align-self: flex-start; /* 核心修改：彻底废除 flex-end，改为顶部对齐 */
-  margin-top: 14%; /* 核心修改：物理上提气泡，让 31dvh 短绳顶端无缝刺入垫子下沉后的腹部中心 */
+  align-self: flex-start; /* 顶部对齐 */
+  margin-top: 14%; /* 物理上提气泡，让 31dvh 短绳顶端无缝刺入垫子下沉后的中心 */
 }
 
 .bubble-4 {
   align-self: center;
-  transform: translateY(-5%); /* 核心修改：维持 -5% 的上提，替换原本的 15% */
+  transform: translateY(-5%);
 }
