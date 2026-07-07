@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cat-nest-v3';
+const CACHE_NAME = 'cat-nest-v4';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -22,26 +22,25 @@ const ASSETS_TO_CACHE = [
   '/assets/装饰-枫叶绿.png',
   '/assets/装饰-枫叶棕.png'
 ];
-// 剩下的激活和抓取逻辑保持不变...
 
 self.addEventListener('install', (event) => {
   self.skipWaiting(); // 强制新版本立刻接管，不准排队
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('大黑猫正在缓存 V2.0 终极魔法素材...');
+      console.log('大黑猫正在缓存 V4.0 终极魔法素材...');
       return cache.addAll(ASSETS_TO_CACHE);
     })
   );
 });
 
 self.addEventListener('activate', (event) => {
-  // 核心杀招：无情剿灭 V1.0 的所有旧缓存
+  // 核心杀招：无情剿灭所有非 V4 版本的旧缓存
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(
         cacheNames.map((cacheName) => {
           if (cacheName !== CACHE_NAME) {
-            console.log('旧猫窝缓存已彻底清理。');
+            console.log('旧猫窝缓存已彻底清理：', cacheName);
             return caches.delete(cacheName);
           }
         })
