@@ -6,20 +6,23 @@ html, body {
   padding: 0;
   width: 100%;
   height: 100%;
-  min-height: -webkit-fill-available; /* 核心修改：绑定 WebKit 物理全屏 */
+  min-height: -webkit-fill-available; /* 绑定 WebKit 物理全屏 */
   background: #FDFBF7 url('https://cat-nest-sandy.vercel.app/assets/大底图.png') no-repeat top center / cover;
-  background-color: #FDFBF7 !important; /* 核心修改：加固背景底色死锁，防底部安全区留白 */
+  background-color: #FDFBF7 !important; /* 加固背景底色死锁，防底部安全区留白 */
   overscroll-behavior-y: none; /* 强行拦截 iOS/Android 下拉回弹泛白 */
   -webkit-tap-highlight-color: transparent;
 }
 
 /* ==========================================
-   2. 主容器架构 (现代视口 + 底部安全区)
+   2. 主容器架构 (现代视口 + 底部安全区 + V7底色吞噬)
    ========================================== */
 .cat-nest-container {
   width: 100%;
   height: 100dvh; /* 现代动态视口，防底部地址栏吞噬 */
+  min-height: 100vh; /* 核心修改：传统视口回退保护 */
+  min-height: -webkit-fill-available; /* 核心修改：强制主容器向下蔓延至物理边缘 */
   max-height: 100dvh;
+  background-color: #FDFBF7 !important; /* 核心修改：主容器接管底色，彻底吞噬底部安全区白条 */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -35,7 +38,7 @@ html, body {
 .cushion-banner {
   position: relative;
   width: 125%;
-  height: clamp(210px, 30dvh, 260px); /* 核心修改：锁死物理高度上限，防 PWA 全屏巨猫膨胀 */
+  height: clamp(210px, 30dvh, 260px); /* 锁死物理高度上限，防 PWA 全屏巨猫膨胀 */
   align-self: center;
   flex-shrink: 0;
   z-index: 50; /* 绝对最高层级，物理压死下方所有的挂绳线头 */
@@ -126,8 +129,8 @@ html, body {
   pointer-events: none;
 }
 
-/* 核心纠偏：向心差分高度 */
-.bubble-1::before { height: 27dvh; }
+/* 核心纠偏：向心差分高度 (V7 终极视觉平衡) */
+.bubble-1::before { height: 22dvh; } /* 核心修改：大幅缩减至 22dvh，确保 PWA 全屏下完美藏入软垫左垂耳后方 */
 .bubble-2::before { height: 52dvh; }
 .bubble-3::before { height: 31dvh; }
 .bubble-4::before { height: 35dvh; }
