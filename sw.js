@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cat-nest-v4';
+const CACHE_NAME = 'cat-nest-v5';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -27,14 +27,14 @@ self.addEventListener('install', (event) => {
   self.skipWaiting(); // 强制新版本立刻接管，不准排队
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('大黑猫正在缓存 V4.0 终极魔法素材...');
+      console.log('大黑猫正在缓存 V5.0 终极魔法素材...');
       return cache.addAll(ASSETS_TO_CACHE);
     })
   );
 });
 
 self.addEventListener('activate', (event) => {
-  // 核心杀招：无情剿灭所有非 V4 版本的旧缓存
+  // 核心杀招：无情剿灭所有非 V5 版本的旧缓存
   event.waitUntil(
     caches.keys().then((cacheNames) => {
       return Promise.all(

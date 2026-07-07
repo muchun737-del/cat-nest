@@ -105,7 +105,7 @@ html, body {
   transform: translateX(-50%);
   width: 52px; /* 强制加宽至 52px，高分屏下颗粒饱满清晰 */
   background: url('https://cat-nest-sandy.vercel.app/assets/星星挂绳.png') repeat-y bottom center / 100% auto;
-  z-index: 2; /* 核心修改：设置中间层，压在泡泡背景上方 */
+  z-index: 2; /* 设置中间层，压在泡泡背景上方 */
   pointer-events: none;
 }
 
@@ -120,26 +120,26 @@ html, body {
   width: 100%;
   height: 100%;
   background: url('https://cat-nest-sandy.vercel.app/assets/泡泡.png') no-repeat center center / contain;
-  z-index: 1; /* 核心修改：设置最底层 */
+  z-index: 1; /* 设置最底层 */
   pointer-events: none;
 }
 
-/* 核心纠偏：向心差分高度（精准匹配垫子下沉后的物理遮挡边界） */
-.bubble-1::before { height: 27dvh; } /* 最左侧：刚好被下沉的左垂耳稳稳压住 */
-.bubble-2::before { height: 52dvh; } /* 中间左：防止下沉后绳头穿透腹部顶端 */
-.bubble-3::before { height: 31dvh; } /* 中间右：黄金比例，介于日记与罐头之间形成律动 */
-.bubble-4::before { height: 35dvh; } /* 最右侧：配合气泡上提至 -5%，精准藏入右垂耳后方 */
+/* 核心纠偏：向心差分高度 */
+.bubble-1::before { height: 27dvh; }
+.bubble-2::before { height: 52dvh; }
+.bubble-3::before { height: 31dvh; }
+.bubble-4::before { height: 35dvh; }
 
 /* ==========================================
    7. 纯净内部图标 (三明治最高层：z-index: 3)
    ========================================== */
 .bubble-icon {
-  width: 65%; /* 纯净素材统一 65%，四周留足舒适透明泡泡边 */
+  width: 65%;
   height: 65%;
   object-fit: contain;
   pointer-events: none;
   position: relative;
-  z-index: 3; /* 核心修改：设置最高层，完全悬浮于挂绳与泡泡之上 */
+  z-index: 3; /* 设置最高层，完全悬浮于挂绳与泡泡之上 */
 }
 
 /* ==========================================
@@ -156,8 +156,8 @@ html, body {
 }
 
 .bubble-3 {
-  align-self: flex-start; /* 顶部对齐 */
-  margin-top: 14%; /* 物理上提气泡，让 31dvh 短绳顶端无缝刺入垫子下沉后的中心 */
+  align-self: flex-start;
+  margin-top: 14%;
 }
 
 .bubble-4 {
