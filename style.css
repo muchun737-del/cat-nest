@@ -1,5 +1,5 @@
 /* ==========================================
-   1. 底层配置与防回弹泛白死锁 (V11 真正物理全屏)
+   1. 底层配置与防回弹泛白死锁 (V11 物理全屏终极版)
    ========================================== */
 html, body {
   margin: 0;
@@ -7,21 +7,21 @@ html, body {
   width: 100%;
   height: 100%;
   min-height: -webkit-fill-available;
-  background: #E5DDD3 !important; /* 仅作极端环境下的底层保底 */
+  background: #E5DDD3 !important; /* 仅作极端渲染环境下的底层保底 */
   overscroll-behavior-y: none; /* 强行拦截 iOS/Android 下拉回弹泛白 */
   -webkit-tap-highlight-color: transparent;
 }
 
 /* ==========================================
-   2. 主容器架构 (现代视口 + 底部安全区 + 物理悬浮锚点)
+   2. 主容器架构 (现代动态视口 + 底部安全区 + 悬浮锚点)
    ========================================== */
 .cat-nest-container {
   width: 100%;
-  height: 100dvh; /* 现代动态视口，防底部地址栏吞噬 */
+  height: 100dvh; /* 现代动态视口，防 iOS/Android 底部地址栏吞噬 */
   min-height: 100vh; /* 传统视口回退保护 */
   min-height: -webkit-fill-available; /* 强制主容器向下蔓延至物理边缘 */
   max-height: 100dvh;
-  background: transparent !important; /* 主容器全透明，让出视口 */
+  background: transparent !important; /* 主容器绝对全透明，让出视口 */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -29,24 +29,24 @@ html, body {
   overflow-y: hidden; /* 沉浸式单屏死锁 */
   box-sizing: border-box;
   padding-bottom: env(safe-area-inset-bottom); /* 苹果底部虚拟条安全区保护 */
-  position: relative; /* 为物理全屏背景层提供坐标锚点 */
+  position: relative; /* 为后续物理悬浮背景层提供绝对锚点 */
 }
 
 /* ==========================================
-   2.5 V11核心杀招：全屏物理悬浮壁纸层 (彻底干掉底部白条与纯色陷阱)
+   2.5 V11核心杀招：全屏物理悬浮壁纸层 (彻底斩断底部白条与纯色陷阱)
    ========================================== */
 .cat-nest-container::before {
   content: "";
-  position: fixed; /* 绝对无视文档流，死死钉在物理屏幕四个角 */
+  position: fixed; /* 绝对无视文档流，死死钉在物理玻璃屏幕的四个角 */
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
   width: 100vw;
   height: 100vh;
-  height: -webkit-fill-available; /* 强制填满 iOS 底部虚拟 Home 键安全区 */
+  height: -webkit-fill-available; /* 强制填满 iOS 底部虚拟 Home 键最深层安全区 */
   background: url('https://cat-nest-sandy.vercel.app/assets/大底图.png') no-repeat center bottom / cover !important;
-  z-index: -100; /* 锁在物理屏幕的最底层，绝不遮挡猫咪与气泡 */
+  z-index: -100; /* 锁在物理屏幕的最底层，绝不遮挡上方任何猫咪与气泡 */
   pointer-events: none;
 }
 
@@ -56,7 +56,7 @@ html, body {
 .cushion-banner {
   position: relative;
   width: 125%;
-  height: clamp(210px, 34dvh, 260px); /* 锁死物理高度上限，防 PWA 全屏巨猫膨胀 */
+  height: clamp(210px, 34dvh, 260px); /* 锁死物理高度上限，防 PWA 全屏巨猫无序膨胀 */
   align-self: center;
   flex-shrink: 0;
   z-index: 50; /* 绝对最高层级，物理压死下方所有的挂绳线头 */

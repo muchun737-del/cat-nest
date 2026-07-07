@@ -27,8 +27,31 @@ self.addEventListener('install', (event) => {
   self.skipWaiting(); // 强制新版本立刻接管，不准排队
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('大黑猫正在缓存 V10.0 终极魔法素材...');
+      console.log('大黑猫正在缓存 V11.0 终极魔法素材...');
       return cache.addAll(ASSETS_TO_CACHE);
+    })
+  );
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cacheName) => {
+          if (cacheName !== CACHE_NAME) {
+            console.log('大黑猫正在清除旧版本缓存:', cacheName);
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
+  );
+});
+
+self.addEventListener('fetch', (event) => {
+  event.respondWith(
+    caches.match(event.request).then((response) => {
+      return response || fetch(event.request);
     })
   );
 });
