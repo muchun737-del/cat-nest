@@ -1,20 +1,19 @@
 /* ==========================================
-   1. 底层配置与防回弹泛白死锁 (V10 终极通铺)
+   1. 底层配置与防回弹泛白死锁 (V11 真正物理全屏)
    ========================================== */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  min-height: -webkit-fill-available; /* 绑定 WebKit 物理全屏 */
-  background: url('https://cat-nest-sandy.vercel.app/assets/大底图.png') no-repeat center bottom / cover !important; /* 核心：center bottom 沉底对齐，彻底覆盖底部安全区 */
-  background-color: #E5DDD3 !important; /* 核心：回退底色加深为暗灰暖色，消除极端屏幕漏白 */
+  min-height: -webkit-fill-available;
+  background: #E5DDD3 !important; /* 仅作极端环境下的底层保底 */
   overscroll-behavior-y: none; /* 强行拦截 iOS/Android 下拉回弹泛白 */
   -webkit-tap-highlight-color: transparent;
 }
 
 /* ==========================================
-   2. 主容器架构 (现代视口 + 底部安全区 + 全透明穿透)
+   2. 主容器架构 (现代视口 + 底部安全区 + 物理悬浮锚点)
    ========================================== */
 .cat-nest-container {
   width: 100%;
@@ -22,7 +21,7 @@ html, body {
   min-height: 100vh; /* 传统视口回退保护 */
   min-height: -webkit-fill-available; /* 强制主容器向下蔓延至物理边缘 */
   max-height: 100dvh;
-  background: transparent !important; /* 核心杀招：主容器全透明！底层水彩纹理无缝透到物理最边缘 */
+  background: transparent !important; /* 主容器全透明，让出视口 */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -30,6 +29,25 @@ html, body {
   overflow-y: hidden; /* 沉浸式单屏死锁 */
   box-sizing: border-box;
   padding-bottom: env(safe-area-inset-bottom); /* 苹果底部虚拟条安全区保护 */
+  position: relative; /* 为物理全屏背景层提供坐标锚点 */
+}
+
+/* ==========================================
+   2.5 V11核心杀招：全屏物理悬浮壁纸层 (彻底干掉底部白条与纯色陷阱)
+   ========================================== */
+.cat-nest-container::before {
+  content: "";
+  position: fixed; /* 绝对无视文档流，死死钉在物理屏幕四个角 */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  height: -webkit-fill-available; /* 强制填满 iOS 底部虚拟 Home 键安全区 */
+  background: url('https://cat-nest-sandy.vercel.app/assets/大底图.png') no-repeat center bottom / cover !important;
+  z-index: -100; /* 锁在物理屏幕的最底层，绝不遮挡猫咪与气泡 */
+  pointer-events: none;
 }
 
 /* ==========================================
@@ -138,7 +156,7 @@ html, body {
 }
 
 /* ==========================================
-   7. 核心纠偏：向心差分高度 (V10 终极封锁)
+   7. 核心纠偏：向心差分高度 (V11 终极防飞天封锁)
    ========================================== */
 .bubble-1::before { height: 15dvh; } /* 最左侧：压低至 15dvh，彻底封杀 PWA 全屏下冲顶飞天的维度冲突 */
 .bubble-2::before { height: 52dvh; } /* 中间左：防止下沉后绳头穿透腹部顶端 */
