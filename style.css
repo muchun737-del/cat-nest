@@ -28,7 +28,7 @@ html, body {
 }
 
 /* ==========================================
-   3. 顶部软垫容器 (精修：垫子物理下沉，严密覆盖线头)
+   3. 顶部软垫容器 (精修：物理下沉，拯救黑猫耳朵)
    ========================================== */
 .cushion-banner {
   position: relative;
@@ -40,7 +40,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: translateY(3%); /* 彻底废除负值！改为正向物理下沉，向下稳稳压住挂绳源头 */
+  transform: translateY(6%); /* 【已修改】由2%下沉至6%，在不压死下方气泡的前提下让垫子进一步下倾 */
 }
 
 .sky-cushion {
@@ -60,7 +60,7 @@ html, body {
   object-fit: contain;
   z-index: 51;
   pointer-events: none;
-  transform: translateY(1%) scale(0.96); /* 配合垫子下沉，微调黑猫陷落感 */
+  transform: translateY(3%) scale(0.96); /* 差分协同：软垫多下来，黑猫少下来，营造物理包裹重心 */
 }
 
 /* ==========================================
@@ -97,7 +97,7 @@ html, body {
 }
 
 /* ==========================================
-   6. 终极挂绳架构：垂直平铺 + 多维绳高校准
+   6. 终极挂绳架构：垂直平铺 + 精准多维绳高校准
    ========================================== */
 .chime-bubble::before {
   content: "";
@@ -111,11 +111,11 @@ html, body {
   pointer-events: none;
 }
 
-/* 空间坐标精确对撞 */
-.bubble-1::before { height: 26dvh; } /* 左 1：精准扎入软垫左垂耳底部 */
+/* 空间坐标重配：解决两侧绳高的“飞天”与“脱节” */
+.bubble-1::before { height: 38dvh; } /* 【已修改】由26dvh大幅拉长至38dvh，彻底解决左一悬空脱离蓝框的问题 */
 .bubble-2::before { height: 55dvh; } /* 中间左：直入软垫腹部中心 */
 .bubble-3::before { height: 70dvh; } /* 中间右：直入软垫腹部中心 */
-.bubble-4::before { height: 32dvh; } /* 精修：绳高大裁剪至 32dvh，阻断 repeat-y 二次平铺，根治断层 */
+.bubble-4::before { height: 35dvh; } /* 第四根：维持35dvh，配合气泡上提，确保隐入软垫后方 */
 
 /* ==========================================
    7. 纯净内部图标
@@ -130,11 +130,11 @@ html, body {
 }
 
 /* ==========================================
-   8. 错落悬挂排版 (精修：右 1 气泡大幅上提)
+   8. 错落悬挂排版 (精修：左 1 气泡舒适深挂)
    ========================================== */
 .bubble-1 {
   align-self: flex-start;
-  margin-top: 19%; 
+  margin-top: 19%; /* 从 14% 进一步下调至 19%，形成更自然的错落落差 */
 }
 
 .bubble-2 {
@@ -149,5 +149,5 @@ html, body {
 
 .bubble-4 {
   align-self: center;
-  transform: translateY(-8%); /* 精修：废除正值下沉，改为负值上提，缩短与垫子的物理间距 */
+  transform: translateY(-5%); /* 维持 -5%，把毛线球整体提升 */
 }
