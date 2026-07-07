@@ -28,7 +28,7 @@ html, body {
 }
 
 /* ==========================================
-   3. 顶部软垫容器 (精修：物理下沉，拯救黑猫耳朵)
+   3. 顶部软垫容器 (精修：垫子物理下沉，严密覆盖线头)
    ========================================== */
 .cushion-banner {
   position: relative;
@@ -40,7 +40,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: translateY(-1.5%); /* 废除原-8%！大幅下落释放顶部，保证猫耳 100% 完整显示 */
+  transform: translateY(3%); /* 彻底废除负值！改为正向物理下沉，向下稳稳压住挂绳源头 */
 }
 
 .sky-cushion {
@@ -60,7 +60,7 @@ html, body {
   object-fit: contain;
   z-index: 51;
   pointer-events: none;
-  transform: translateY(3%) scale(0.96); /* 差分协同：软垫多下来，黑猫少下来，营造物理包裹重心 */
+  transform: translateY(1%) scale(0.96); /* 配合垫子下沉，微调黑猫陷落感 */
 }
 
 /* ==========================================
@@ -97,7 +97,7 @@ html, body {
 }
 
 /* ==========================================
-   6. 终极挂绳架构：垂直平铺 + 精准多维绳高校准
+   6. 终极挂绳架构：垂直平铺 + 多维绳高校准
    ========================================== */
 .chime-bubble::before {
   content: "";
@@ -111,11 +111,11 @@ html, body {
   pointer-events: none;
 }
 
-/* 空间坐标重配：解决两侧绳高的“飞天”与“脱节” */
-.bubble-1::before { height: 26dvh; } /* 精修：大幅缩短至 26dvh，精准扎入软垫左垂耳底部，绝不飞天出界 */
+/* 空间坐标精确对撞 */
+.bubble-1::before { height: 26dvh; } /* 左 1：精准扎入软垫左垂耳底部 */
 .bubble-2::before { height: 55dvh; } /* 中间左：直入软垫腹部中心 */
 .bubble-3::before { height: 70dvh; } /* 中间右：直入软垫腹部中心 */
-.bubble-4::before { height: 47dvh; } /* 精修：拉长至 47dvh，配合垫子下沉完成无缝闭环，解决右侧断裂 */
+.bubble-4::before { height: 32dvh; } /* 精修：绳高大裁剪至 32dvh，阻断 repeat-y 二次平铺，根治断层 */
 
 /* ==========================================
    7. 纯净内部图标
@@ -130,11 +130,11 @@ html, body {
 }
 
 /* ==========================================
-   8. 错落悬挂排版 (精修：左 1 气泡舒适深挂)
+   8. 错落悬挂排版 (精修：右 1 气泡大幅上提)
    ========================================== */
 .bubble-1 {
   align-self: flex-start;
-  margin-top: 19%; /* 从 14% 进一步下调至 19%，形成更自然的错落落差 */
+  margin-top: 19%; 
 }
 
 .bubble-2 {
@@ -149,5 +149,5 @@ html, body {
 
 .bubble-4 {
   align-self: center;
-  transform: translateY(15%);
+  transform: translateY(-8%); /* 精修：废除正值下沉，改为负值上提，缩短与垫子的物理间距 */
 }
