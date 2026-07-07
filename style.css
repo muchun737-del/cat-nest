@@ -60,7 +60,7 @@ html, body {
   object-fit: contain;
   z-index: 51;
   pointer-events: none;
-  transform: scale(0.82) translateY(0%); /* 核心修改：保持 82% 优雅体型，微移回正(0%) */
+  transform: scale(0.82) translateY(0%); /* 保持 82% 优雅体型，微移回正(0%) */
 }
 
 /* ==========================================
@@ -81,13 +81,12 @@ html, body {
 }
 
 /* ==========================================
-   5. 风铃气泡核心 (建立正向层级基准，废除 isolation)
+   5. 风铃气泡核心 (建立正向层级基准)
    ========================================== */
 .chime-bubble {
   width: clamp(80px, 22vw, 140px);
   aspect-ratio: 1 / 1;
   flex-shrink: 1;
-  /* 核心重构：移除原背景图与 isolation: isolate，纯净作为容器基准 */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -96,7 +95,7 @@ html, body {
 }
 
 /* ==========================================
-   6. 终极挂绳架构 (三明治底层：z-index: 1)
+   6. 终极挂绳架构 (三明治顶层：z-index: 4)
    ========================================== */
 .chime-bubble::before {
   content: "";
@@ -106,12 +105,12 @@ html, body {
   transform: translateX(-50%);
   width: 52px; /* 强制加宽至 52px，高分屏下颗粒饱满清晰 */
   background: url('https://cat-nest-sandy.vercel.app/assets/星星挂绳.png') repeat-y bottom center / 100% auto;
-  z-index: 1; /* 核心修改：废除 -1，改用正数层级作为最底层 */
+  z-index: 4; /* 核心反转：提升至最高层级，强行压盖在所有元素之上 */
   pointer-events: none;
 }
 
 /* ==========================================
-   6.5 泡泡透明底图 (三明治中层：z-index: 2)
+   6.5 泡泡透明底图 (三明治底层：z-index: 2)
    ========================================== */
 .chime-bubble::after {
   content: "";
@@ -121,7 +120,7 @@ html, body {
   width: 100%;
   height: 100%;
   background: url('https://cat-nest-sandy.vercel.app/assets/泡泡.png') no-repeat center center / contain;
-  z-index: 2; /* 核心修改：独立作为中层，稳稳盖住底层的挂绳 */
+  z-index: 2; /* 核心反转：退居最底层 */
   pointer-events: none;
 }
 
@@ -132,7 +131,7 @@ html, body {
 .bubble-4::before { height: 35dvh; } /* 最右侧：配合气泡上提至 -5%，精准藏入右垂耳后方 */
 
 /* ==========================================
-   7. 纯净内部图标 (三明治顶层：z-index: 3)
+   7. 纯净内部图标 (三明治中层：z-index: 3)
    ========================================== */
 .bubble-icon {
   width: 65%; /* 纯净素材统一 65%，四周留足舒适透明泡泡边 */
@@ -140,7 +139,7 @@ html, body {
   object-fit: contain;
   pointer-events: none;
   position: relative;
-  z-index: 3; /* 核心修改：显式声明最高层级，绝不被挂绳或泡泡遮挡 */
+  z-index: 3; /* 核心反转：处于中层，被挂绳盖住，但盖在泡泡底图上方 */
 }
 
 /* ==========================================
