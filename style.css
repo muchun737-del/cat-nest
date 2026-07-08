@@ -1,28 +1,45 @@
 /* ==========================================
-   style.css (大黑猫与小花猫的猫窝 - V12 纯净竖版终极架构)
+   style.css (大黑猫与小花猫的猫窝 - V13 物理解耦终极架构)
    ========================================== */
 
-/* 1. 底层配置与防回弹死锁 (完美适配 9:16 竖版大底图) */
+/* 1. 底层配置与防回弹死锁 (剥离背景图，仅保留底色保底) */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
   min-height: -webkit-fill-available;
-  /* 既然总监提供了完美的竖图，直接在最底层铺满，干脆利落 */
-  background: #FDFBF7 url('https://cat-nest-sandy.vercel.app/assets/大底图.png') no-repeat center center / cover !important;
+  /* 仅保留基础纸张底色保底，废除直接在 body 铺写壁纸的旧语法，防止 iOS 截断泛白 */
+  background-color: #E5DDD3 !important;
   overscroll-behavior-y: none; /* 强行拦截 iOS/Android 下拉回弹泛白 */
   -webkit-tap-highlight-color: transparent;
+  position: relative;
 }
 
-/* 2. 主容器架构 (现代动态视口 + 底部安全区) */
+/* 1.5 独立物理全屏壁纸层 (2vh 外溢张力，彻底盖死 iOS 底部安全区白条) */
+body::before {
+  content: "";
+  position: fixed;
+  top: -2vh;
+  bottom: -2vh;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  height: 104vh;
+  /* 赋予上下 2vh 的外溢物理张力，把壁纸作为独立图层强行推入系统安全区底部 */
+  background: url('https://cat-nest-sandy.vercel.app/assets/大底图.png') no-repeat center center / cover !important;
+  z-index: -10; /* 死锁在最底层，绝对不干涉任何前端交互 */
+  pointer-events: none;
+}
+
+/* 2. 主容器架构 (现代动态视口 + 底部安全区保护) */
 .cat-nest-container {
   width: 100%;
   height: 100dvh; /* 现代动态视口，防 iOS/Android 底部地址栏吞噬 */
   min-height: 100vh;
   min-height: -webkit-fill-available; 
   max-height: 100dvh;
-  background: transparent !important; /* 容器全透明，露出完美的竖版底图 */
+  background: transparent !important; /* 容器全透明，露出底层的 fixed 物理壁纸 */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -31,9 +48,8 @@ html, body {
   box-sizing: border-box;
   padding-bottom: env(safe-area-inset-bottom); /* 完美兼容苹果底部虚拟条安全区 */
   position: relative;
-  z-index: 1;
+  z-index: 1; /* 稳稳坐在壁纸层之上，防止图层穿透 */
 }
-/* 注意：V11 版本里那个又长又丑的 .cat-nest-container::before 外溢补偿代码，已经被我彻底删干净了！ */
 
 /* 3. 顶部软垫容器 (z-index: 50 物理压顶) */
 .cushion-banner {
