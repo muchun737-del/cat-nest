@@ -1,23 +1,26 @@
 /* ==========================================
-   style.css (大黑猫与小花猫的猫窝 - V13 物理解耦终极架构)
+   style.css (大黑猫与小花猫的猫窝 - V14 彻底修复物理底图盖死)
    ========================================== */
 
-/* 1. 底层配置与防回弹死锁 (剥离背景图，仅保留底色保底) */
-html, body {
+/* 1. 底层配置与防回弹死锁 (底色下放，杜绝遮盖) */
+html {
+  background-color: #E5DDD3 !important; /* 底色保底交给最底部的 html */
+  overscroll-behavior-y: none; /* 强行拦截 iOS/Android 下拉回弹泛白 */
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
   min-height: -webkit-fill-available;
-  /* 仅保留基础纸张底色保底，废除直接在 body 铺写壁纸的旧语法，防止 iOS 截断泛白 */
-  background-color: #E5DDD3 !important;
-  overscroll-behavior-y: none; /* 强行拦截 iOS/Android 下拉回弹泛白 */
-  -webkit-tap-highlight-color: transparent;
+  background-color: transparent !important; /* body 强制全透明，让出视口给壁纸 */
   position: relative;
 }
 
-/* 1.5 独立物理全屏壁纸层 (2vh 外溢张力，彻底盖死 iOS 底部安全区白条) */
-body::before {
+/* 1.5 独立物理全屏壁纸层 (修正层级穿透问题) */
+body::after {
   content: "";
   position: fixed;
   top: -2vh;
@@ -26,29 +29,29 @@ body::before {
   right: 0;
   width: 100vw;
   height: 104vh;
-  /* 赋予上下 2vh 的外溢物理张力，把壁纸作为独立图层强行推入系统安全区底部 */
+  /* 赋予上下 2vh 外溢张力，彻底盖死 iOS 底部安全区白条 */
   background: url('https://cat-nest-sandy.vercel.app/assets/大底图.png') no-repeat center center / cover !important;
-  z-index: -10; /* 死锁在最底层，绝对不干涉任何前端交互 */
+  z-index: -1; /* 稳稳放在透明 body 之下，主容器容器之下 */
   pointer-events: none;
 }
 
-/* 2. 主容器架构 (现代动态视口 + 底部安全区保护) */
+/* 2. 主容器架构 */
 .cat-nest-container {
   width: 100%;
-  height: 100dvh; /* 现代动态视口，防 iOS/Android 底部地址栏吞噬 */
+  height: 100dvh; /* 现代动态视口 */
   min-height: 100vh;
-  min-height: -webkit-fill-available; 
+  min-height: -webkit-fill-available;
   max-height: 100dvh;
-  background: transparent !important; /* 容器全透明，露出底层的 fixed 物理壁纸 */
+  background: transparent !important;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   overflow-x: hidden;
-  overflow-y: hidden; /* 沉浸式单屏死锁 */
+  overflow-y: hidden;
   box-sizing: border-box;
-  padding-bottom: env(safe-area-inset-bottom); /* 完美兼容苹果底部虚拟条安全区 */
+  padding-bottom: env(safe-area-inset-bottom);
   position: relative;
-  z-index: 1; /* 稳稳坐在壁纸层之上，防止图层穿透 */
+  z-index: 10; /* 提升主容器层级，确保在壁纸之上，防点击失效 */
 }
 
 /* 3. 顶部软垫容器 (z-index: 50 物理压顶) */
@@ -58,7 +61,7 @@ body::before {
   height: clamp(210px, 34dvh, 260px);
   align-self: center;
   flex-shrink: 0;
-  z-index: 50; /* 绝对最高层级，物理压死下方所有的挂绳线头 */
+  z-index: 50; /* 压死下方挂绳线头 */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,22 +73,22 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain; 
+  object-fit: contain;
   pointer-events: none;
-  transform: translateY(10%); /* 消除高悬空隙 */
+  transform: translateY(10%);
 }
 
 .sky-cat {
   position: relative;
-  height: 100%; 
+  height: 100%;
   width: auto;
   object-fit: contain;
   z-index: 51;
   pointer-events: none;
-  transform: scale(0.82) translateY(6%); /* 稳稳趴在窝里 */
+  transform: scale(0.82) translateY(6%);
 }
 
-/* 4. 风铃气泡舞台 (视觉协同上提) */
+/* 4. 风铃气泡舞台 */
 .chimes-stage {
   flex: 1;
   width: 100%;
@@ -93,14 +96,14 @@ body::before {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  margin-top: -3dvh; 
+  margin-top: -3dvh;
   padding: 0 0 4dvh 0;
   box-sizing: border-box;
   position: relative;
   z-index: 10;
 }
 
-/* 5. 风铃气泡核心 (纯净流体大小) */
+/* 5. 风铃气泡核心 */
 .chime-bubble {
   width: clamp(80px, 22vw, 140px);
   aspect-ratio: 1 / 1;
@@ -118,9 +121,9 @@ body::before {
   bottom: 50%;
   left: 50%;
   transform: translateX(-50%);
-  width: 52px; 
+  width: 52px;
   background: url('https://cat-nest-sandy.vercel.app/assets/星星挂绳.png') repeat-y bottom center / 100% auto;
-  z-index: 2; /* 中间层：盖在透明泡泡上方 */
+  z-index: 2;
   pointer-events: none;
 }
 
@@ -132,24 +135,24 @@ body::before {
   width: 100%;
   height: 100%;
   background: url('https://cat-nest-sandy.vercel.app/assets/泡泡.png') no-repeat center center / contain;
-  z-index: 1; /* 最底层 */
+  z-index: 1;
   pointer-events: none;
 }
 
 .bubble-icon {
-  width: 65%; 
+  width: 65%;
   height: 65%;
   object-fit: contain;
-  z-index: 3; /* 最高层 */
+  z-index: 3;
   position: relative;
   pointer-events: none;
 }
 
 /* 7. 核心纠偏：向心差分高度 */
-.bubble-1::before { height: 15dvh; } 
-.bubble-2::before { height: 42dvh; } 
-.bubble-3::before { height: 31dvh; } 
-.bubble-4::before { height: 35dvh; } 
+.bubble-1::before { height: 15dvh; }
+.bubble-2::before { height: 42dvh; }
+.bubble-3::before { height: 31dvh; }
+.bubble-4::before { height: 35dvh; }
 
 /* 8. 错落悬挂排版 */
 .bubble-1 { align-self: flex-start; margin-top: 5%; }
