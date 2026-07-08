@@ -1,53 +1,61 @@
 /* ==========================================
-   style.css (大黑猫与小花猫的猫窝 - V16 终极 PWA 独立屏全网兼容版)
+   style.css (大黑猫与小花猫的猫窝 - V17 终极去除 fill-available 彻底通铺版)
    ========================================== */
 
-/* 1. 底层配置与防回弹死锁 (废除 iOS PWA 显存杀手 fixed，还原稳妥通铺) */
-html, body {
+/* 1. 底层地基 (彻底剔除 -webkit-fill-available，把大壁纸直铺在 html 根层) */
+html {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
-  min-height: -webkit-fill-available;
-  
-  /* 核心修复：彻底废除 background-attachment: fixed！改用平滑通铺，杜绝 PWA 白屏消失 */
-  background-color: #E5DDD3 !important; /* 极限网络延迟时的底色保底 */
+  min-height: 100vh;
+  background-color: #E5DDD3 !important;
   background-image: url('https://cat-nest-sandy.vercel.app/assets/大底图.png') !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
   background-size: cover !important;
-  
-  overscroll-behavior-y: none; /* 强行拦截 iOS/Android 下拉回弹泛白 */
+  overscroll-behavior-y: none;
   -webkit-tap-highlight-color: transparent;
 }
 
-/* 2. 主容器架构 (听从总监情报：PWA 外壳下彻底废除 dvh，回归绝对稳妥的 100vh) */
+/* 2. body 释放透明 (确保壁纸从最顶部玻璃毫无截断铺至底部充电口) */
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  background: transparent !important;
+  overscroll-behavior-y: none;
+  position: relative;
+}
+
+/* 3. 主容器架构 (回归纯净 100vh，依靠 safe-area 保护内部元素) */
 .cat-nest-container {
   width: 100%;
-  height: 100vh; /* 核心修复：在 standalone 独立模式下，100vh 才是真正的王道，不再被系统莫名扣减 59px */
+  height: 100vh;
   min-height: 100vh;
-  min-height: -webkit-fill-available;
   max-height: 100vh;
-  background: transparent !important; /* 主容器必须全透明，露出底层稳稳抓牢的壁纸 */
+  background: transparent !important;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   overflow-x: hidden;
-  overflow-y: hidden; /* 沉浸式单屏锁定 */
+  overflow-y: hidden;
   box-sizing: border-box;
-  padding-bottom: env(safe-area-inset-bottom); /* 苹果安全区环境变量继续严丝合缝护体 */
+  padding-bottom: env(safe-area-inset-bottom);
   position: relative;
   z-index: 10;
 }
 
-/* 3. 顶部软垫容器 (z-index: 50 物理压顶) */
+/* 4. 顶部软垫容器 (z-index: 50 物理压顶) */
 .cushion-banner {
   position: relative;
   width: 125%;
   height: clamp(210px, 34dvh, 260px);
   align-self: center;
   flex-shrink: 0;
-  z-index: 50; /* 压死下方挂绳线头 */
+  z-index: 50;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,7 +82,7 @@ html, body {
   transform: scale(0.82) translateY(6%);
 }
 
-/* 4. 风铃气泡舞台 */
+/* 5. 风铃气泡舞台 */
 .chimes-stage {
   flex: 1;
   width: 100%;
@@ -89,7 +97,7 @@ html, body {
   z-index: 10;
 }
 
-/* 5. 风铃气泡核心 */
+/* 6. 风铃气泡核心 */
 .chime-bubble {
   width: clamp(80px, 22vw, 140px);
   aspect-ratio: 1 / 1;
@@ -100,7 +108,7 @@ html, body {
   position: relative;
 }
 
-/* 6. 三明治图层架构：挂绳(中) + 泡泡底图(底) + 图标(顶) */
+/* 7. 三明治图层架构：挂绳(中) + 泡泡底图(底) + 图标(顶) */
 .chime-bubble::before {
   content: "";
   position: absolute;
@@ -134,13 +142,13 @@ html, body {
   pointer-events: none;
 }
 
-/* 7. 核心纠偏：向心差分高度 */
+/* 8. 核心纠偏：向心差分高度 */
 .bubble-1::before { height: 15dvh; }
 .bubble-2::before { height: 42dvh; }
 .bubble-3::before { height: 31dvh; }
 .bubble-4::before { height: 35dvh; }
 
-/* 8. 错落悬挂排版 */
+/* 9. 错落悬挂排版 */
 .bubble-1 { align-self: flex-start; margin-top: 5%; }
 .bubble-2 { align-self: center; transform: translateY(-18%); }
 .bubble-3 { align-self: flex-start; margin-top: 14%; }

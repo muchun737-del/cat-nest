@@ -1,4 +1,4 @@
-const CACHE_NAME = 'cat-nest-v16';
+const CACHE_NAME = 'cat-nest-v17';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
