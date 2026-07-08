@@ -1,63 +1,45 @@
 /* ==========================================
-   1. 底层配置与防回弹泛白死锁 (V12 物理全屏终极版)
+   style.css (大黑猫与小花猫的猫窝 - V12 纯净竖版终极架构)
    ========================================== */
+
+/* 1. 底层配置与防回弹死锁 (完美适配 9:16 竖版大底图) */
 html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
   min-height: -webkit-fill-available;
-  /* 底层直接双重绑定水彩底图，作为双保险 */
-  background: #E5DDD3 url('https://cat-nest-sandy.vercel.app/assets/大底图.png') no-repeat center center / cover !important;
+  /* 既然总监提供了完美的竖图，直接在最底层铺满，干脆利落 */
+  background: #FDFBF7 url('https://cat-nest-sandy.vercel.app/assets/大底图.png') no-repeat center center / cover !important;
   overscroll-behavior-y: none; /* 强行拦截 iOS/Android 下拉回弹泛白 */
   -webkit-tap-highlight-color: transparent;
 }
 
-/* ==========================================
-   2. 主容器架构 (现代动态视口 + 底部安全区 + 独立堆叠上下文)
-   ========================================== */
+/* 2. 主容器架构 (现代动态视口 + 底部安全区) */
 .cat-nest-container {
   width: 100%;
   height: 100dvh; /* 现代动态视口，防 iOS/Android 底部地址栏吞噬 */
-  min-height: 100vh; /* 传统视口回退保护 */
-  min-height: -webkit-fill-available; /* 强制主容器向下蔓延至物理边缘 */
+  min-height: 100vh;
+  min-height: -webkit-fill-available; 
   max-height: 100dvh;
-  background: transparent !important; /* 主容器绝对全透明，让出视口 */
+  background: transparent !important; /* 容器全透明，露出完美的竖版底图 */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   overflow-x: hidden;
   overflow-y: hidden; /* 沉浸式单屏死锁 */
   box-sizing: border-box;
-  padding-bottom: env(safe-area-inset-bottom); /* 苹果底部虚拟条安全区保护 */
+  padding-bottom: env(safe-area-inset-bottom); /* 完美兼容苹果底部虚拟条安全区 */
   position: relative;
-  z-index: 1; /* 核心建立干净的堆叠上下文，保护内部图层关系 */
+  z-index: 1;
 }
+/* 注意：V11 版本里那个又长又丑的 .cat-nest-container::before 外溢补偿代码，已经被我彻底删干净了！ */
 
-/* ==========================================
-   2.5 V12终极绝杀：5%物理边缘外溢通铺层 (彻底斩断 Safari 与 PWA 上下纯色留白)
-   ========================================== */
-.cat-nest-container::before {
-  content: "";
-  position: fixed; /* 绝对无视文档流，死死钉在物理屏幕上 */
-  top: -5vh;    /* 向上冲出物理屏幕 5%，彻底吞噬顶部状态栏 */
-  left: -5vw;   /* 向左冲出物理屏幕 5% */
-  right: -5vw;  /* 向右冲出物理屏幕 5% */
-  bottom: -5vh; /* 向下冲出物理屏幕 5%，彻底吞噬底部 Home 键横条安全区 */
-  width: 110vw; /* 强制放大，保证无死角覆盖 */
-  height: 110vh;
-  background: url('https://cat-nest-sandy.vercel.app/assets/大底图.png') no-repeat center center / cover !important;
-  z-index: -1;  /* 稳稳处于主容器最下层，绝对压在 body 油漆之上的同时，不遮挡任何小猫和气泡 */
-  pointer-events: none;
-}
-
-/* ==========================================
-   3. 顶部软垫容器 (z-index: 50 物理压顶)
-   ========================================== */
+/* 3. 顶部软垫容器 (z-index: 50 物理压顶) */
 .cushion-banner {
   position: relative;
   width: 125%;
-  height: clamp(210px, 34dvh, 260px); /* 锁死物理高度上限，防 PWA 全屏巨猫无序膨胀 */
+  height: clamp(210px, 34dvh, 260px);
   align-self: center;
   flex-shrink: 0;
   z-index: 50; /* 绝对最高层级，物理压死下方所有的挂绳线头 */
@@ -72,24 +54,22 @@ html, body {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain; /* 完整保留椭圆垂耳造型，无裁切 */
+  object-fit: contain; 
   pointer-events: none;
-  transform: translateY(10%); /* 大幅下沉垫子至 10%，消除高悬空隙 */
+  transform: translateY(10%); /* 消除高悬空隙 */
 }
 
 .sky-cat {
   position: relative;
-  height: 100%; /* 100% 饱满张力，居中沉浸 */
+  height: 100%; 
   width: auto;
   object-fit: contain;
   z-index: 51;
   pointer-events: none;
-  transform: scale(0.82) translateY(6%); /* 缩减巨猫比例至 82% 并微下沉，稳稳趴在窝里 */
+  transform: scale(0.82) translateY(6%); /* 稳稳趴在窝里 */
 }
 
-/* ==========================================
-   4. 风铃气泡舞台 (视觉协同上提，z-index: 10)
-   ========================================== */
+/* 4. 风铃气泡舞台 (视觉协同上提) */
 .chimes-stage {
   flex: 1;
   width: 100%;
@@ -97,16 +77,14 @@ html, body {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  margin-top: -3dvh; /* 向上收紧与垫子的距离 */
+  margin-top: -3dvh; 
   padding: 0 0 4dvh 0;
   box-sizing: border-box;
   position: relative;
   z-index: 10;
 }
 
-/* ==========================================
-   5. 风铃气泡核心 (纯净流体大小)
-   ========================================== */
+/* 5. 风铃气泡核心 (纯净流体大小) */
 .chime-bubble {
   width: clamp(80px, 22vw, 140px);
   aspect-ratio: 1 / 1;
@@ -117,23 +95,19 @@ html, body {
   position: relative;
 }
 
-/* ==========================================
-   6. 三明治图层架构：挂绳(中) + 泡泡底图(底) + 图标(顶)
-   ========================================== */
-/* 挂绳：垂直平铺，z-index: 2 处于中间层 */
+/* 6. 三明治图层架构：挂绳(中) + 泡泡底图(底) + 图标(顶) */
 .chime-bubble::before {
   content: "";
   position: absolute;
-  bottom: 50%; /* 直扎泡泡靶心，绝对无断层 */
+  bottom: 50%;
   left: 50%;
   transform: translateX(-50%);
-  width: 52px; /* 强制加宽至 52px，高分屏下颗粒饱满清晰 */
+  width: 52px; 
   background: url('https://cat-nest-sandy.vercel.app/assets/星星挂绳.png') repeat-y bottom center / 100% auto;
-  z-index: 2; /* 中间层：稳稳盖在透明泡泡上方 */
+  z-index: 2; /* 中间层：盖在透明泡泡上方 */
   pointer-events: none;
 }
 
-/* 泡泡透明底图：z-index: 1 处于最底层 */
 .chime-bubble::after {
   content: "";
   position: absolute;
@@ -146,43 +120,23 @@ html, body {
   pointer-events: none;
 }
 
-/* 纯净内部图标：z-index: 3 处于最高层 */
 .bubble-icon {
-  width: 65%; /* 纯净素材统一 65%，四周留足舒适透明泡泡边 */
+  width: 65%; 
   height: 65%;
   object-fit: contain;
-  z-index: 3; /* 最高层：稳稳压在挂绳和泡泡最上方 */
+  z-index: 3; /* 最高层 */
   position: relative;
   pointer-events: none;
 }
 
-/* ==========================================
-   7. 核心纠偏：向心差分高度 (V12 终极防飞天与断层封锁)
-   ========================================== */
-.bubble-1::before { height: 15dvh; } /* 最左侧：压低至 15dvh，彻底封杀 PWA 全屏下冲顶飞天 */
-.bubble-2::before { height: 42dvh; } /* 中间左：痛砍至 42dvh，配合垫子下沉，绝对不准冲顶穿孔 */
-.bubble-3::before { height: 31dvh; } /* 中间右：黄金比例，介于日记与罐头之间形成律动 */
-.bubble-4::before { height: 35dvh; } /* 最右侧：配合气泡上提至 -5%，精准藏入右垂耳后方 */
+/* 7. 核心纠偏：向心差分高度 */
+.bubble-1::before { height: 15dvh; } 
+.bubble-2::before { height: 42dvh; } 
+.bubble-3::before { height: 31dvh; } 
+.bubble-4::before { height: 35dvh; } 
 
-/* ==========================================
-   8. 错落悬挂排版 (继承原版无绝对坐标排版)
-   ========================================== */
-.bubble-1 {
-  align-self: flex-start;
-  margin-top: 5%;
-}
-
-.bubble-2 {
-  align-self: center;
-  transform: translateY(-18%);
-}
-
-.bubble-3 {
-  align-self: flex-start; /* 顶部对齐 */
-  margin-top: 14%; /* 物理上提气泡，让 31dvh 短绳顶端无缝刺入软垫中心 */
-}
-
-.bubble-4 {
-  align-self: center;
-  transform: translateY(-5%); /* 维持 -5% 的上提 */
-}
+/* 8. 错落悬挂排版 */
+.bubble-1 { align-self: flex-start; margin-top: 5%; }
+.bubble-2 { align-self: center; transform: translateY(-18%); }
+.bubble-3 { align-self: flex-start; margin-top: 14%; }
+.bubble-4 { align-self: center; transform: translateY(-5%); }
