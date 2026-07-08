@@ -1,48 +1,35 @@
 /* ==========================================
-   style.css (大黑猫与小花猫的猫窝 - V14 彻底修复物理底图盖死)
+   style.css (大黑猫与小花猫的猫窝 - V15 终极地基焊死版)
    ========================================== */
 
-/* 1. 底层配置与防回弹死锁 (底色下放，杜绝遮盖) */
-html {
-  background-color: #E5DDD3 !important; /* 底色保底交给最底部的 html */
-  overscroll-behavior-y: none; /* 强行拦截 iOS/Android 下拉回弹泛白 */
-  -webkit-tap-highlight-color: transparent;
-}
-
-body {
+/* 1. 底层配置与防回弹死锁 (地基焊死，彻底消灭底部白条) */
+html, body {
   margin: 0;
   padding: 0;
   width: 100%;
   height: 100%;
   min-height: -webkit-fill-available;
-  background-color: transparent !important; /* body 强制全透明，让出视口给壁纸 */
-  position: relative;
+  
+  /* 核心杀招：直接在最高层级的地基上铺设背景，并强制固定 */
+  background-color: #E5DDD3 !important; /* 极限网络延迟时的底色保底 */
+  background-image: url('https://cat-nest-sandy.vercel.app/assets/大底图.png') !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  background-size: cover !important;
+  background-attachment: fixed !important; /* 钉死背景，无视任何滚动和下拉，让苹果抓取安全区时只能抓到这张图 */
+  
+  overscroll-behavior-y: none; /* 强行拦截 iOS/Android 下拉回弹泛白 */
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* 1.5 独立物理全屏壁纸层 (修正层级穿透问题) */
-body::after {
-  content: "";
-  position: fixed;
-  top: -2vh;
-  bottom: -2vh;
-  left: 0;
-  right: 0;
-  width: 100vw;
-  height: 104vh;
-  /* 赋予上下 2vh 外溢张力，彻底盖死 iOS 底部安全区白条 */
-  background: url('https://cat-nest-sandy.vercel.app/assets/大底图.png') no-repeat center center / cover !important;
-  z-index: -1; /* 稳稳放在透明 body 之下，主容器容器之下 */
-  pointer-events: none;
-}
-
-/* 2. 主容器架构 */
+/* 2. 主容器架构 (现代动态视口 + 底部安全区) */
 .cat-nest-container {
   width: 100%;
   height: 100dvh; /* 现代动态视口 */
   min-height: 100vh;
   min-height: -webkit-fill-available;
   max-height: 100dvh;
-  background: transparent !important;
+  background: transparent !important; /* 主容器必须全透明，露出底层被钉死的壁纸 */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -51,7 +38,7 @@ body::after {
   box-sizing: border-box;
   padding-bottom: env(safe-area-inset-bottom);
   position: relative;
-  z-index: 10; /* 提升主容器层级，确保在壁纸之上，防点击失效 */
+  z-index: 10;
 }
 
 /* 3. 顶部软垫容器 (z-index: 50 物理压顶) */
