@@ -1,8 +1,8 @@
 /* ==========================================
-   style.css (大黑猫与小花猫的猫窝 - V15 终极地基焊死版)
+   style.css (大黑猫与小花猫的猫窝 - V16 终极 PWA 独立屏全网兼容版)
    ========================================== */
 
-/* 1. 底层配置与防回弹死锁 (地基焊死，彻底消灭底部白条) */
+/* 1. 底层配置与防回弹死锁 (废除 iOS PWA 显存杀手 fixed，还原稳妥通铺) */
 html, body {
   margin: 0;
   padding: 0;
@@ -10,33 +10,32 @@ html, body {
   height: 100%;
   min-height: -webkit-fill-available;
   
-  /* 核心杀招：直接在最高层级的地基上铺设背景，并强制固定 */
+  /* 核心修复：彻底废除 background-attachment: fixed！改用平滑通铺，杜绝 PWA 白屏消失 */
   background-color: #E5DDD3 !important; /* 极限网络延迟时的底色保底 */
   background-image: url('https://cat-nest-sandy.vercel.app/assets/大底图.png') !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
   background-size: cover !important;
-  background-attachment: fixed !important; /* 钉死背景，无视任何滚动和下拉，让苹果抓取安全区时只能抓到这张图 */
   
   overscroll-behavior-y: none; /* 强行拦截 iOS/Android 下拉回弹泛白 */
   -webkit-tap-highlight-color: transparent;
 }
 
-/* 2. 主容器架构 (现代动态视口 + 底部安全区) */
+/* 2. 主容器架构 (听从总监情报：PWA 外壳下彻底废除 dvh，回归绝对稳妥的 100vh) */
 .cat-nest-container {
   width: 100%;
-  height: 100dvh; /* 现代动态视口 */
+  height: 100vh; /* 核心修复：在 standalone 独立模式下，100vh 才是真正的王道，不再被系统莫名扣减 59px */
   min-height: 100vh;
   min-height: -webkit-fill-available;
-  max-height: 100dvh;
-  background: transparent !important; /* 主容器必须全透明，露出底层被钉死的壁纸 */
+  max-height: 100vh;
+  background: transparent !important; /* 主容器必须全透明，露出底层稳稳抓牢的壁纸 */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   overflow-x: hidden;
-  overflow-y: hidden;
+  overflow-y: hidden; /* 沉浸式单屏锁定 */
   box-sizing: border-box;
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom); /* 苹果安全区环境变量继续严丝合缝护体 */
   position: relative;
   z-index: 10;
 }
