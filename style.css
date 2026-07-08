@@ -1,36 +1,36 @@
 /* ==========================================
-   style.css (大黑猫与小花猫的猫窝 - V17 终极去除 fill-available 彻底通铺版)
+   style.css (大黑猫与小花猫的猫窝 - V24 终极完美收官版)
    ========================================== */
 
-/* 1. 底层地基 (彻底剔除 -webkit-fill-available，把大壁纸直铺在 html 根层) */
+/* 1. 底层地基 (核心修复：把水彩底图和 #FDFBF7 纸张底色直接双层焊死在 html 根层，回归纯净 100vh) */
 html {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  min-height: 100vh;
-  background-color: #E5DDD3 !important;
-  background-image: url('https://cat-nest-sandy.vercel.app/assets/大底图.png') !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100vh !important;
+  background-color: #fdfbf7 !important;
+  background-image: url("https://cat-nest-sandy.vercel.app/assets/大底图.png") !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
   background-size: cover !important;
-  overscroll-behavior-y: none;
-  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior-y: none !important;
+  -webkit-tap-highlight-color: transparent !important;
 }
 
-/* 2. body 释放透明 (确保壁纸从最顶部玻璃毫无截断铺至底部充电口) */
+/* 2. body 彻底透明与通铺 (坚决废除截断和冗余属性，改用无界透明通铺) */
 body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  min-height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 100vh !important;
   background: transparent !important;
-  overscroll-behavior-y: none;
-  position: relative;
+  overscroll-behavior-y: none !important;
+  position: relative !important;
 }
 
-/* 3. 主容器架构 (回归纯净 100vh，依靠 safe-area 保护内部元素) */
+/* 3. 主容器架构 (回归纯粹 100vh，依靠 safe-area 保护内部元素，彻底与底图解钩) */
 .cat-nest-container {
   width: 100%;
   height: 100vh;
@@ -48,17 +48,18 @@ body {
   z-index: 10;
 }
 
-/* 4. 顶部软垫容器 (z-index: 50 物理压顶) */
+/* 4. 顶部软垫容器 (z-index: 50 物理压顶，保护垫子不被绳子与藤蔓覆盖) */
 .cushion-banner {
   position: relative;
   width: 125%;
-  height: clamp(210px, 34dvh, 260px);
+  height: clamp(210px, 34vh, 260px);
   align-self: center;
   flex-shrink: 0;
   z-index: 50;
   display: flex;
   align-items: center;
   justify-content: center;
+  pointer-events: none;
 }
 
 .sky-cushion {
@@ -72,17 +73,132 @@ body {
   transform: translateY(10%);
 }
 
+/* 5. 主图黑猫：自然呼气起伏动效，开启指针交互允许抚摸 */
 .sky-cat {
   position: relative;
   height: 100%;
   width: auto;
   object-fit: contain;
   z-index: 51;
-  pointer-events: none;
-  transform: scale(0.82) translateY(6%);
+  pointer-events: auto;
+  cursor: pointer;
+  animation: cat-breathing 4s ease-in-out infinite;
 }
 
-/* 5. 风铃气泡舞台 */
+@keyframes cat-breathing {
+  0%,
+  100% {
+    transform: scale(0.82) translateY(6%);
+  }
+  50% {
+    transform: scale(0.826) translateY(5.1%);
+  }
+}
+
+/* 6. 氛围层容器 (云朵 z-index: 4, 独立藤蔓 z-index: 5, 落叶 z-index: 6) */
+.ambient-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  pointer-events: none !important;
+  overflow: hidden;
+}
+
+.cloud-layer {
+  z-index: 4;
+}
+.vines-interspread-stage {
+  z-index: 5;
+}
+.leaf-layer {
+  z-index: 6;
+}
+
+/* 提速浮云样式与大范围漫步关键帧 */
+.ambient-cloud {
+  position: absolute;
+  object-fit: contain;
+  pointer-events: none;
+  animation: cloud-drift 9s ease-in-out infinite alternate;
+}
+
+@keyframes cloud-drift {
+  0% {
+    transform: translate3d(-42px, 0, 0);
+  }
+  100% {
+    transform: translate3d(42px, 0, 0);
+  }
+}
+
+/* 放缓落叶样式与慵懒飘落关键帧 */
+.ambient-leaf {
+  position: absolute;
+  top: -10vh;
+  object-fit: contain;
+  pointer-events: none;
+  animation: leaf-fall 18s linear infinite;
+}
+
+@keyframes leaf-fall {
+  0% {
+    transform: translate3d(0, -10vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.85;
+  }
+  85% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: translate3d(var(--fall-x, 100px), 105vh, 0)
+      rotate(var(--fall-rot, 360deg));
+    opacity: 0;
+  }
+}
+
+/* 7. 独立藤蔓穿插层大幅加粗，且 top 整体下沉藏进软垫后方 */
+.interspread-vine {
+  position: absolute;
+  top: 18vh;
+  width: clamp(45px, 12vw, 65px);
+  transform-origin: top center;
+  pointer-events: none;
+  background: url("https://cat-nest-sandy.vercel.app/assets/藤蔓装饰.png")
+    repeat-y bottom center / 100% auto;
+  animation: vine-sway-reverse 6s ease-in-out infinite alternate;
+  opacity: 0.92;
+}
+
+@keyframes vine-sway-reverse {
+  0% {
+    transform: rotate(3.2deg);
+  }
+  100% {
+    transform: rotate(-3.2deg);
+  }
+}
+
+.vine-pos-1 {
+  left: 22%;
+  height: 38vh;
+  animation-delay: -0.5s;
+}
+.vine-pos-2 {
+  left: 47%;
+  height: 50vh;
+  animation-delay: -2.8s;
+}
+.vine-pos-3 {
+  left: 72%;
+  height: 42vh;
+  animation-delay: -1.4s;
+}
+
+/* 8. 风铃气泡舞台整体负边距上提，强行让绳子顶端刺入软垫后方 */
 .chimes-stage {
   flex: 1;
   width: 100%;
@@ -90,45 +206,121 @@ body {
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
-  margin-top: -3dvh;
-  padding: 0 0 4dvh 0;
+  margin-top: -12vh;
+  padding: 0 0 4vh 0;
   box-sizing: border-box;
   position: relative;
   z-index: 10;
 }
 
-/* 6. 风铃气泡核心 */
-.chime-bubble {
+/* 9. 风铃单体容器：全量回归 flex-start 统一顶部挂载，彻底抛弃 translateY 与 center 错位 */
+.pendulum-unit {
   width: clamp(80px, 22vw, 140px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  transform-origin: top center;
+  animation: pendulum-sway 4.5s ease-in-out infinite alternate;
+}
+
+@keyframes pendulum-sway {
+  0% {
+    transform: rotate(-2.8deg);
+  }
+  100% {
+    transform: rotate(2.8deg);
+  }
+}
+
+/* 容器整体顶部微调，严格顺应软垫底部的波浪弧度 */
+.unit-1 {
+  align-self: flex-start;
+  margin-top: -2vh;
+  animation-delay: 0s;
+}
+.unit-2 {
+  align-self: flex-start;
+  margin-top: -6vh;
+  animation-delay: -1.2s;
+}
+.unit-3 {
+  align-self: flex-start;
+  margin-top: 2vh;
+  animation-delay: -0.7s;
+}
+/* 终极修复：右侧 unit-4 向下沉 3vh，消除冲顶飞天断层 */
+.unit-4 {
+  align-self: flex-start;
+  margin-top: 3vh;
+  animation-delay: -2.3s;
+}
+
+/* 10. 星星挂绳独立核心 (彻底废除所有 margin-top 负边距，依靠纯净高度自然下垂连接气泡) */
+.star-string-only {
+  width: 52px;
+  background: url("https://cat-nest-sandy.vercel.app/assets/星星挂绳.png")
+    repeat-y bottom center / 100% auto;
+  pointer-events: none;
+}
+
+.unit-1 .star-string-only {
+  height: 20vh;
+}
+.unit-2 .star-string-only {
+  height: 48vh;
+}
+.unit-3 .star-string-only {
+  height: 35vh;
+}
+/* 终极修复：等比缩短右侧绳长至 36vh，保证下方罐头气泡位置完美 */
+.unit-4 .star-string-only {
+  height: 36vh;
+}
+
+/* 11. 圆泡泡本体向上配置 -10px 负边距，与星星绳末端发生无缝物理咬合 */
+.bubble-body {
+  width: 100%;
   aspect-ratio: 1 / 1;
-  flex-shrink: 1;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  cursor: pointer;
+  pointer-events: auto;
+  scale: 1;
+  margin-top: -10px;
 }
 
-/* 7. 三明治图层架构：挂绳(中) + 泡泡底图(底) + 图标(顶) */
-.chime-bubble::before {
-  content: "";
-  position: absolute;
-  bottom: 50%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 52px;
-  background: url('https://cat-nest-sandy.vercel.app/assets/星星挂绳.png') repeat-y bottom center / 100% auto;
-  z-index: 2;
-  pointer-events: none;
+/* 气泡 Q 弹动画 (仅缩放泡泡自身，绝对不动挂绳) */
+@keyframes bubble-bounce {
+  0% {
+    scale: 1;
+  }
+  30% {
+    scale: 0.92;
+  }
+  65% {
+    scale: 1.12;
+  }
+  100% {
+    scale: 1;
+  }
 }
 
-.chime-bubble::after {
+.bubble-body.is-bouncing {
+  animation: bubble-bounce 380ms cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.bubble-body::after {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: url('https://cat-nest-sandy.vercel.app/assets/泡泡.png') no-repeat center center / contain;
+  background: url("https://cat-nest-sandy.vercel.app/assets/泡泡.png") no-repeat
+    center center / contain;
   z-index: 1;
   pointer-events: none;
 }
@@ -141,15 +333,3 @@ body {
   position: relative;
   pointer-events: none;
 }
-
-/* 8. 核心纠偏：向心差分高度 */
-.bubble-1::before { height: 15dvh; }
-.bubble-2::before { height: 42dvh; }
-.bubble-3::before { height: 31dvh; }
-.bubble-4::before { height: 35dvh; }
-
-/* 9. 错落悬挂排版 */
-.bubble-1 { align-self: flex-start; margin-top: 5%; }
-.bubble-2 { align-self: center; transform: translateY(-18%); }
-.bubble-3 { align-self: flex-start; margin-top: 14%; }
-.bubble-4 { align-self: center; transform: translateY(-5%); }

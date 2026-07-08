@@ -1,38 +1,92 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <meta name="theme-color" content="#FDFBF7">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>绘本风猫窝主页 - 终极纯净版</title>
-  <link rel="apple-touch-icon" href="https://cat-nest-sandy.vercel.app/assets/icon.png">
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <main class="cat-nest-container">
-    
-    <header class="cushion-banner">
-      <img class="sky-cushion" src="https://cat-nest-sandy.vercel.app/assets/头图-垫子.png" alt="底垫">
-      <img class="sky-cat" id="main-cat" src="https://cat-nest-sandy.vercel.app/assets/头图-猫闭眼.png" alt="黑猫">
-    </header>
-    
-    <section class="chimes-stage">
-      <div class="chime-bubble bubble-1">
-        <img class="bubble-icon" src="https://cat-nest-sandy.vercel.app/assets/入口-观察日记.png" alt="观察日记">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#FDFBF7" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <title>大黑猫与小花猫的猫窝 - V22 物理通铺与挂绳断层终极修复版</title>
+    <link
+      rel="apple-touch-icon"
+      href="https://cat-nest-sandy.vercel.app/assets/icon.png"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="cat-nest-container">
+      <header class="cushion-banner">
+        <img
+          class="sky-cushion"
+          src="https://cat-nest-sandy.vercel.app/assets/头图-垫子.png"
+          alt="底垫"
+        />
+        <img
+          class="sky-cat"
+          id="main-cat"
+          src="https://cat-nest-sandy.vercel.app/assets/头图-猫闭眼.png"
+          alt="黑猫"
+        />
+      </header>
+
+      <div id="cloud-layer" class="ambient-layer cloud-layer"></div>
+      <div id="vines-layer" class="ambient-layer vines-interspread-stage">
+        <div class="interspread-vine vine-pos-1"></div>
+        <div class="interspread-vine vine-pos-2"></div>
+        <div class="interspread-vine vine-pos-3"></div>
       </div>
-      <div class="chime-bubble bubble-2">
-        <img class="bubble-icon" src="https://cat-nest-sandy.vercel.app/assets/入口-碎碎念念.png" alt="碎碎念念">
-      </div>
-      <div class="chime-bubble bubble-3">
-        <img class="bubble-icon" src="https://cat-nest-sandy.vercel.app/assets/入口-小猫故事.png" alt="小猫故事">
-      </div>
-      <div class="chime-bubble bubble-4">
-        <img class="bubble-icon" src="https://cat-nest-sandy.vercel.app/assets/入口-罐头鱼干.png" alt="罐头鱼干">
-      </div>
-    </section>
-    
-  </main>
-</body>
+      <div id="leaf-layer" class="ambient-layer leaf-layer"></div>
+
+      <section class="chimes-stage">
+        <div class="pendulum-unit unit-1">
+          <div class="star-string-only"></div>
+          <div class="bubble-body">
+            <img
+              class="bubble-icon"
+              src="https://cat-nest-sandy.vercel.app/assets/入口-观察日记.png"
+              alt="观察日记"
+            />
+          </div>
+        </div>
+        <div class="pendulum-unit unit-2">
+          <div class="star-string-only"></div>
+          <div class="bubble-body">
+            <img
+              class="bubble-icon"
+              src="https://cat-nest-sandy.vercel.app/assets/入口-碎碎念念.png"
+              alt="碎碎念念"
+            />
+          </div>
+        </div>
+        <div class="pendulum-unit unit-3">
+          <div class="star-string-only"></div>
+          <div class="bubble-body">
+            <img
+              class="bubble-icon"
+              src="https://cat-nest-sandy.vercel.app/assets/入口-小猫故事.png"
+              alt="小猫故事"
+            />
+          </div>
+        </div>
+        <div class="pendulum-unit unit-4">
+          <div class="star-string-only"></div>
+          <div class="bubble-body">
+            <img
+              class="bubble-icon"
+              src="https://cat-nest-sandy.vercel.app/assets/入口-罐头鱼干.png"
+              alt="罐头鱼干"
+            />
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
 </html>
