@@ -10,7 +10,7 @@ html {
   height: 100% !important;
   min-height: 100vh !important;
   background-color: #fdfbf7 !important;
-  background-image: url("https://cat-nest-sandy.vercel.app/assets/大底图.png") !important;
+  background-image: url("https://cat-nest-sandy.vercel.app/assets/common/大底图.png") !important;
   background-repeat: no-repeat !important;
   background-position: center center !important;
   background-size: cover !important;
@@ -167,7 +167,7 @@ body {
   width: clamp(45px, 12vw, 65px);
   transform-origin: top center;
   pointer-events: none;
-  background: url("https://cat-nest-sandy.vercel.app/assets/藤蔓装饰.png")
+  background: url("https://cat-nest-sandy.vercel.app/assets/home/藤蔓装饰.png")
     repeat-y bottom center / 100% auto;
   animation: vine-sway-reverse 6s ease-in-out infinite alternate;
   opacity: 0.92;
@@ -259,7 +259,7 @@ body {
 /* 10. 星星挂绳独立核心 (彻底废除所有 margin-top 负边距，依靠纯净高度自然下垂连接气泡) */
 .star-string-only {
   width: 52px;
-  background: url("https://cat-nest-sandy.vercel.app/assets/星星挂绳.png")
+  background: url("https://cat-nest-sandy.vercel.app/assets/home/星星挂绳.png")
     repeat-y bottom center / 100% auto;
   pointer-events: none;
 }
@@ -319,7 +319,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: url("https://cat-nest-sandy.vercel.app/assets/泡泡.png") no-repeat
+  background: url("https://cat-nest-sandy.vercel.app/assets/home/泡泡.png") no-repeat
     center center / contain;
   z-index: 1;
   pointer-events: none;

@@ -1,6 +1,6 @@
 /**
- * app.js - 大黑猫与小花猫的猫窝 (V22 物理通铺与挂绳断层终极修复版)
- * 严格遵照霍漪总监要求：全动效精准校准、绝对不产生任何报错或省略
+ * app.js - 大黑猫与小花猫的猫窝 (V24 终极完美收官版)
+ * 严格遵照霍漪总监要求：全盘物理隔离，绝对不产生任何报错或省略
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -39,8 +39,8 @@ function initCatTouchInteraction() {
   if (!mainCat) return;
 
   const closedEyeSrc =
-    "https://cat-nest-sandy.vercel.app/assets/头图-猫闭眼.png";
-  const openEyeSrc = "https://cat-nest-sandy.vercel.app/assets/头图-猫睁眼.png";
+    "https://cat-nest-sandy.vercel.app/assets/home/头图-猫闭眼.png";
+  const openEyeSrc = "https://cat-nest-sandy.vercel.app/assets/home/头图-猫睁眼.png";
 
   let isCatAwake = false;
   let sleepTimer = null;
@@ -72,7 +72,7 @@ function initAmbientClouds() {
 
   const cloudConfigs = [
     {
-      src: "https://cat-nest-sandy.vercel.app/assets/装饰-云大.png",
+      src: "https://cat-nest-sandy.vercel.app/assets/home/装饰-云大.png",
       top: "16dvh",
       left: "-5%",
       width: "150px",
@@ -81,7 +81,7 @@ function initAmbientClouds() {
       delay: -2,
     },
     {
-      src: "https://cat-nest-sandy.vercel.app/assets/装饰-云小.png",
+      src: "https://cat-nest-sandy.vercel.app/assets/home/装饰-云小.png",
       top: "28dvh",
       left: "68%",
       width: "100px",
@@ -90,7 +90,7 @@ function initAmbientClouds() {
       delay: -5,
     },
     {
-      src: "https://cat-nest-sandy.vercel.app/assets/装饰-云大.png",
+      src: "https://cat-nest-sandy.vercel.app/assets/home/装饰-云大.png",
       top: "44dvh",
       left: "12%",
       width: "170px",
@@ -99,7 +99,7 @@ function initAmbientClouds() {
       delay: -3,
     },
     {
-      src: "https://cat-nest-sandy.vercel.app/assets/装饰-云小.png",
+      src: "https://cat-nest-sandy.vercel.app/assets/home/装饰-云小.png",
       top: "58dvh",
       left: "76%",
       width: "95px",
@@ -108,7 +108,7 @@ function initAmbientClouds() {
       delay: -7,
     },
     {
-      src: "https://cat-nest-sandy.vercel.app/assets/装饰-云大.png",
+      src: "https://cat-nest-sandy.vercel.app/assets/home/装饰-云大.png",
       top: "70dvh",
       left: "4%",
       width: "140px",
@@ -117,7 +117,7 @@ function initAmbientClouds() {
       delay: -6,
     },
     {
-      src: "https://cat-nest-sandy.vercel.app/assets/装饰-云小.png",
+      src: "https://cat-nest-sandy.vercel.app/assets/home/装饰-云小.png",
       top: "80dvh",
       left: "48%",
       width: "115px",
@@ -149,9 +149,9 @@ function initAmbientLeaves() {
   if (!leafLayer) return;
 
   const leafTypes = [
-    "https://cat-nest-sandy.vercel.app/assets/装饰-枫叶红.png",
-    "https://cat-nest-sandy.vercel.app/assets/装饰-枫叶绿.png",
-    "https://cat-nest-sandy.vercel.app/assets/装饰-枫叶棕.png",
+    "https://cat-nest-sandy.vercel.app/assets/home/装饰-枫叶红.png",
+    "https://cat-nest-sandy.vercel.app/assets/home/装饰-枫叶绿.png",
+    "https://cat-nest-sandy.vercel.app/assets/home/装饰-枫叶棕.png",
   ];
 
   const totalLeaves = 10;
